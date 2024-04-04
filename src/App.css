@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Notable&display=swap');
+
+:root {
+  --background-color: #0E0F0E;
+  --text-color: #ffffff;
+  --primary-color: #77FF4E; 
+  --secondary-color: #479E54;
+  --accent-color: #CD3AFF;
+
+}
+
+.App {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: "Montserrat", sans-serif;
+  height: 100vh;
+  width: 100vw; 
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  font-family: "Notable", sans-serif;
+  margin: auto;
+}
+

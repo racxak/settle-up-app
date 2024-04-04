@@ -1,0 +1,61 @@
+.main-title {
+	font-size: 73px;
+	letter-spacing: 35px;
+	position: relative;
+	animation-name: title;
+	animation-duration: 4s;
+	text-align: center;
+	z-index: 10;
+	margin-top: 200px;
+	margin-bottom: 125px;
+	text-align: center;
+}
+
+@keyframes title {
+	0% {
+		font-size: 105px;
+	}
+	25% {
+		font-size: 105px;
+	}
+	100% {
+		margin-top: 200px;
+		font-size: 73px;
+	}
+}
+
+.circle {
+	width: 993px;
+	height: 993px;
+	border-radius: 50%;
+	position: absolute;
+	/* TODO - pozycjonowanie */
+}
+
+.lightgreen {
+	border-color: var(--primary-color);
+	background-color: var(--primary-color);
+	left: 50%;
+	bottom: 0;
+	transform: translate(-95%, 65%);
+}
+
+.darkgreen {
+	border-color: var(--secondary-color);
+	background-color: var(--secondary-color);
+	left: 50%;
+	bottom: 0;
+	transform: translate(-140%, 17%);
+}
+
+.btn-question-mark {
+	position: absolute;
+	cursor: pointer;
+	right: 15px;
+	bottom: 15px;
+
+	/* TODO: hover active */
+}
+
+
+/* TODO: responsivness */
