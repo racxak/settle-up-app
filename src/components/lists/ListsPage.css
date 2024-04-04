@@ -44,3 +44,35 @@
   position: absolute;
   bottom: 3rem;
 }
+
+.add-new-list-container-header{
+  text-align: center;
+  margin-bottom: 2rem;
+  margin-left: 3rem;
+  margin-right: 3rem;
+
+}
+form .new-list{
+  margin-top: 1rem;
+}
+
+.divider-with-text {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #fff; /* Dostosuj do koloru tekstu z obrazka */
+}
+
+.divider-with-text hr{
+  border-color: var(--accent-color);
+  width: 100%;
+}
+
+.divider-text {
+ text-align: center;
+ width: 40rem;
+}
+.divider-with-text{
+  text-align: center;
+  margin-bottom: 1rem;
+}
