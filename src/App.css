@@ -25,6 +25,10 @@ h1,h2 {
   font-family: "Notable", sans-serif;
   margin: auto;
 }
+h3{
+  font-family: "Montserrat", sans-serif;
+  margin: auto;
+}
 
 .divider{
   width: 560px;

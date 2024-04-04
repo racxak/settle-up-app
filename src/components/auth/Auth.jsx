@@ -13,8 +13,7 @@ export default function Auth(){
        dialog.current.open();
   }
 
-  function handleDialogClose (){
-   
+  function handleDialogClose (){ 
  }
 
   return(<>
@@ -28,7 +27,7 @@ export default function Auth(){
 
     <Modal ref={dialog} onClose={handleDialogClose}>
          <h2>What is settle up?</h2>
-         <p>This app is your personal mediator in the world of finance - ideal for managing your accounts both professionally and privately. Constructed with simplicity in mind, it avoids getting lost in the maze of bills and ambiguous accounts. It is a tool for those who value transparency and want to always have their finances under control. Whether it's settling accounts in the company or splitting the bill after a joint trip with friends, our app provides a clear and simple way to organise shared expenses. With us, finances become simple, intuitive and stress-free, allowing you to manage your budget with ease and convenience. With this app, every transaction is clear as day and you can enjoy peace of mind knowing your money is exactly where it should be.</p>
+         <p className='about'>This app is your personal mediator in the world of finance - ideal for managing your accounts both professionally and privately. Constructed with simplicity in mind, it avoids getting lost in the maze of bills and ambiguous accounts. It is a tool for those who value transparency and want to always have their finances under control. Whether it's settling accounts in the company or splitting the bill after a joint trip with friends, our app provides a clear and simple way to organise shared expenses. With us, finances become simple, intuitive and stress-free, allowing you to manage your budget with ease and convenience. With this app, every transaction is clear as day and you can enjoy peace of mind knowing your money is exactly where it should be.</p>
 		</Modal>
 </>
    );

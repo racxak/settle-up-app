@@ -45,19 +45,18 @@
 
 .modal p {
   margin: 0.5rem 0;
-  font-size: 1.2rem;
+  font-size: 16px;
   max-width: 30vw;
-  min-width: 27rem;
   font-family: "Montserrat", sans-serif;
+}
+
+.about{
   text-align: justify;
+  min-width: 27rem;
 }
 
 .modal p strong {
   color: var(--accent-color);
-}
-
-.modal form {
-  text-align: right;
 }
 
 .modal .button-close  {
@@ -73,6 +72,10 @@
 .btn-close {
   width: 25px;
   height: 25px;
+}
+
+.modal form label{
+  font-weight: 200;
 }
 
 :focus-visible {
