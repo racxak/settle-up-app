@@ -1,0 +1,46 @@
+.lists-page{
+  height: 100vh;
+  width: 100vw;
+  flex-direction: column; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lists-page h1{
+  position: absolute;
+	letter-spacing: 15px;
+  left:65px;
+  top:60px;
+}
+
+.lists-page h2{
+  position: absolute;
+	letter-spacing: 5px;
+  left:65px;
+  top:135px;
+}
+.divider-position {
+  position: absolute;
+  left:65px;
+  top:120px;
+}
+
+.lists-container{
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  margin-top: 11rem;
+  width: 40vw;
+  height: 70vh;
+}
+
+.empty-info{
+  text-align: center;
+}
+
+.add-button{
+  margin:auto;
+  position: absolute;
+  bottom: 3rem;
+}
