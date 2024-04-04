@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import usePasswordToogle from "../hooks/usePasswordToogle";
 import ArrowIcon from '../assets/arrow-icon.png';
-
 
 export default function Register ({changeForm}) {
   const [InputType, Icon] = usePasswordToogle();
@@ -11,12 +9,13 @@ export default function Register ({changeForm}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // TODO: errors
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessrMsg] = useState("");
   
   function handleSignUp(e){
     e.preventDefault();
-    console.log(fullName, email, password)
+    console.log(fullName, email, password);
   }
 
 	return (

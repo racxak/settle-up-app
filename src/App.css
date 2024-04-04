@@ -21,8 +21,19 @@
   flex-direction: column;
 }
 
-h1 {
+h1,h2 {
   font-family: "Notable", sans-serif;
   margin: auto;
 }
 
+.divider{
+  width: 560px;
+  border-bottom: 1px solid var(--primary-color) ;
+}
+
+.button-icon{
+  background-color: transparent ;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}

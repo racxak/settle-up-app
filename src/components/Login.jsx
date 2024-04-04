@@ -1,13 +1,18 @@
 import React from "react"
-import { Link } from "react-router-dom";
 import usePasswordToogle from "../hooks/usePasswordToogle";
 import ArrowIcon from '../assets/arrow-icon.png'
+import { useNavigate } from 'react-router-dom';
 
 export default function Login ({changeForm}) {
   const [InputType, Icon] = usePasswordToogle();
-  
+  const navigate = useNavigate();
+
+  function handleLogin(){
+    navigate("/lists");
+  }
+
 	return (
-			<form className="form-login-register">
+			<form className="form-login-register" onSubmit={handleLogin}>
 		
 				<label> Email </label>
 				<input type="email" required placeholder="jhon@email.com"

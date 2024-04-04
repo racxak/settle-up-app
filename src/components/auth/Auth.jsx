@@ -22,7 +22,6 @@ export default function Auth(){
   
      <div className='circle lightgreen'></div> 
      <div className='circle darkgreen'></div> 
-
      <Form></Form>
 
     <img onClick={handleDialogOpen} className='btn-question-mark' src={IconQuestionMark} alt="icon-question-mark" />
