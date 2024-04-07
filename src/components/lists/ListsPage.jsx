@@ -2,6 +2,7 @@ import './ListsPage.css'
 import IconButtonAdd from '../../assets/icon-button-add.png'
 import { useRef,useState } from 'react';
 import Modal from '../modal/Modal';
+import Button from '../Button';
 import '../Form.css';
 
 export default function ListsPage(){
@@ -49,6 +50,10 @@ return(
     </div> 
     <label>Team code</label>
     <input type="text" />
+    <div className='buttons-container'>
+    <Button>Join Team</Button>
+    <Button style={"filled"}>Create Team</Button>
+    </div>
   </form>
 </Modal> </>);
 };

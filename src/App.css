@@ -6,7 +6,7 @@
   --primary-color: #77FF4E; 
   --secondary-color: #479E54;
   --accent-color: #CD3AFF;
-
+  --background-color-rgba: rgba(100, 100, 100, 0.5);
 }
 
 .App {
