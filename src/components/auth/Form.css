@@ -30,8 +30,10 @@ form input{
   width: 25.15rem;
 }
 
-.password-container {
-  position: relative; 
+.input-with-button {
+  display: flex;
+  position: relative;
+  flex-direction: column;
 }
 
 .password-toggle-icon {
@@ -41,6 +43,7 @@ form input{
   top: 20px; 
   cursor: pointer;
 }
+
 
 .form-buttons-layout{
   display: flex;

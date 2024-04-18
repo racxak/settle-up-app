@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useRef } from "react";
+import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import './Modal.css'
 import IconButtonClose from '../../assets/icon-button-close.png' 
@@ -15,14 +15,19 @@ const Modal = forwardRef(function Modal(
 			}
 		}
 	});
+
+
 	return createPortal(
-		<dialog ref={dialog} className="modal" onClose={onClose}
+		<dialog ref={dialog} className="modal-external" onClose={onClose}
 		>
+		<div className="modal-internal">
+		{children}
+		</div>	
       <form method="dialog" onSubmit={onClose}>
 				<button className="button-close"><img className="btn-close" src={IconButtonClose} alt="icon-button-close" /></button>
-			</form>  
-		{children}
-		</dialog>,
+			</form>
+		</dialog>
+,
 		document.getElementById('modal')
 	);
 });

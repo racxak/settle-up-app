@@ -80,3 +80,15 @@ form .new-list{
   justify-content: space-between;
   display: flex;
 }
+
+.add-new-list-member{
+  position: absolute; 
+  right: 20px; 
+  top: 20px; 
+  cursor: pointer;
+}
+
+.add-new-list-member-btn{
+    font-size: 20px;
+    color: var(--accent-color);
+}

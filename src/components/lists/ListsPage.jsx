@@ -3,13 +3,19 @@ import IconButtonAdd from '../../assets/icon-button-add.png'
 import { useRef,useState } from 'react';
 import Modal from '../modal/Modal';
 import Button from '../Button';
-import '../Form.css';
+import '../auth/Form.css';
+import { GoPlus } from "react-icons/go";
+import {LISTS} from "../../listy";
+
 
 export default function ListsPage(){
 const dialog = useRef();
+const emailRef = useRef(null);
+const listNameRef = useRef(null);
 
 //testowe  
 const [listsEmpty,setListsEmpty] = useState(false);
+const [members, setMembers] = useState("");
 
 function handleDialogOpen (){
   dialog.current.open();
@@ -17,6 +23,14 @@ function handleDialogOpen (){
 
 function handleDialogClose (){ 
 }
+
+const handleAddNewMember = () => {
+  const email = emailRef.current.value;
+  if (email) { 
+    setMembers(prevMembers => [...prevMembers, email]); 
+    emailRef.current.value = '';
+  }
+};
 
 return(
 <><div className="lists-page"> 
@@ -37,22 +51,31 @@ return(
   <Modal ref={dialog} onClose={handleDialogClose}>
   <h3 className='add-new-list-container-header'>Create a new list or join an existing one</h3>
   <form className='new-list'>
-    <label>Team name</label>
-    <input type="text" />
+    <label>List name</label>
+    <input type="text" ref={emailRef} />
     <p>Add team member</p>
     <label>Email</label>
-    <input type="text" />
+    <div className="input-with-button">
+				<input className='input-with-btn' type="email" ref={emailRef} />
+				<span className='add-new-list-member'><GoPlus onClick= {handleAddNewMember}  className='add-new-list-member-btn'/></span>
+			</div>
+      <ul>
+        {members && members.map((member, index) => (
+          // TODO : wygląd
+          <li key={index}>{member}</li> 
+        ))}
+      </ul>
 
     <div className='divider-with-text'>
       <hr />
       <p className='divider-text'>or join an existing one</p>
       <hr />
     </div> 
-    <label>Team code</label>
+    <label>List code</label>
     <input type="text" />
     <div className='buttons-container'>
-    <Button>Join Team</Button>
-    <Button style={"filled"}>Create Team</Button>
+    <Button>Join list</Button>
+    <Button style={"filled"}>Create list</Button>
     </div>
   </form>
 </Modal> </>);

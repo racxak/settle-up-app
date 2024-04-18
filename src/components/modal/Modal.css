@@ -1,14 +1,14 @@
 
-.modal {
+.modal-internal {
   border: none;
   border-radius: 8px;
   padding: 2rem;
   background-color: var(--background-color);
   color: var(--text-color);
-  position: relative;
+
 }
 
-.modal[open] {
+.modal-external[open] {
   animation: slide-in-from-top 0.35s ease-out;
 }
 
@@ -23,27 +23,28 @@
   }
 }
 
-.modal::backdrop {
+.modal-external::backdrop {
   backdrop-filter: saturate(180%) blur(15px);
 }
+.modal-external {
+ background-color: transparent;
+ border: none;
+ height: 90vh;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+}
 
-
-.modal h2 {
+.modal-internal h2 {
   font-family: "Notable", sans-serif;
   margin: 0 0 0.25rem 0;
   font-size: 2rem;
   text-transform: uppercase;
   min-width: 27.4rem;
 } 
-/* 
-.modal progress {
-  width: 100%;
-  height: 1.5rem;
-  margin: 0;
-  accent-color: var(--accent-color);
-} */
 
-.modal p {
+.modal-internal p {
   margin: 0.5rem 0;
   font-size: 16px;
   max-width: 30vw;
@@ -55,26 +56,27 @@
   min-width: 27rem;
 }
 
-.modal p strong {
+.modal-internal p strong {
   color: var(--accent-color);
 }
 
-.modal .button-close  {
+form[method="dialog"] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-external .button-close{
   background-color: transparent;
   border: none;
   padding: 0;
   cursor: pointer;
   position: absolute;
-  top: 5px;
-  right:5px;
+  bottom: 0.8rem;
+
 }
 
-.btn-close {
-  width: 25px;
-  height: 25px;
-}
-
-.modal form label{
+.modal-internal form label{
   font-weight: 200;
 }
 
