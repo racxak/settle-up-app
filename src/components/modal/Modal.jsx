@@ -8,13 +8,16 @@ const Modal = forwardRef(function Modal(
 	ref
 ) {
   const dialog = useRef();
-	useImperativeHandle(ref, ()=>{
-		return{
-			open(){
-				 dialog.current.showModal();
-			}
-		}
-	});
+	
+  useImperativeHandle(ref, () => ({
+    open() {
+      dialog.current.showModal();
+    },
+    close() {
+      dialog.current.close();
+    }
+  }));
+
 
 
 	return createPortal(
