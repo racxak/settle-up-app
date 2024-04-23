@@ -31,8 +31,11 @@
   flex-direction: column;
   margin: auto;
   margin-top: 11rem;
-  width: 40vw;
-  height: 70vh;
+  width: 50vw;
+  max-height: 65vh;
+  overflow-y: scroll;
+  padding-left: 24vw;
+  padding-right: 24vw;
 }
 
 .empty-info{

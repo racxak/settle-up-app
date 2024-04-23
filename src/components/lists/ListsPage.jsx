@@ -6,7 +6,7 @@ import Button from '../Button';
 import '../auth/Form.css';
 import { GoPlus } from "react-icons/go";
 import {LISTS} from "../../listy";
-
+import ListPanel from '../ListPanel';
 
 export default function ListsPage(){
 const dialog = useRef();
@@ -60,8 +60,8 @@ return(
     <h1>SETTLEUP</h1>
     <div className='divider divider-position'> </div>
     <h2>LISTS</h2>
-    {lists && <div className='lists-container'> 
-      {lists.map((list)=><p>{list.name}</p>)}
+    {lists && <div id='scrollbar' className='screolbar lists-container'> 
+      {lists.map((list)=><ListPanel index={list.id} name={list.name} id={list.id}  iOwn={list.i_own} owned={list.owned}> </ListPanel>)}
        </div>}
 
     {!lists && <div className='empty-info'><p> There's nothing here yet.</p> 

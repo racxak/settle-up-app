@@ -7,6 +7,9 @@
   --secondary-color: #479E54;
   --accent-color: #CD3AFF;
   --background-color-rgba: rgba(100, 100, 100, 0.5);
+  --container-color: #121312; 
+  --light-accent-color: #808280; 
+
 }
 
 .App {
@@ -40,4 +43,26 @@ h3{
   border: none;
   padding: 0;
   cursor: pointer;
+}
+
+.scrollbar {
+  height: 300px;
+  width: 50%;
+  overflow: auto;
+  padding: 0 10px;
+}
+
+#scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+#scrollbar::-webkit-scrollbar-track {
+  border-radius: 8px;
+  background-color: var(--container-color);
+  border: 1px solid var(--container-color);
+}
+
+#scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-color: var(--accent-color);
 }
