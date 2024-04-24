@@ -2,13 +2,14 @@ import './App.css';
 import Auth from './components/auth/Auth';
 import { Routes, Route } from "react-router-dom";
 import ListsPage from './components/lists/ListsPage';
+import SingleList from './components/SingleList';
 
 function App() {
   return (
     <div className="App">
     <Routes>
 				<Route path="/" element={<Auth />}></Route>
-        
+        <Route path="/list/:id" element={<SingleList />} />
 				<Route path="/lists" element={<ListsPage/>}></Route>
 		</Routes> 
 

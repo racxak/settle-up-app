@@ -1,9 +1,10 @@
 .list-panel-container{
   background-color: var(--container-color);
-  border: 1px solid white;
-  padding: 2rem 6rem 3rem 6rem;
+  /* border: 1px solid white; */
+  padding: 2vw 6vw 3vw 6vw;
   border-radius: 8px;
   margin: 1rem;
+  
 }
 
 #list-name-id{
@@ -19,6 +20,7 @@
   color: var(--light-accent-color);
   margin-left: 1rem;
 }
+
 
 #owe{
   color: var(--accent-color);

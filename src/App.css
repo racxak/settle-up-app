@@ -6,7 +6,7 @@
   --primary-color: #77FF4E; 
   --secondary-color: #479E54;
   --accent-color: #CD3AFF;
-  --background-color-rgba: rgba(100, 100, 100, 0.5);
+  --background-color-rgba: rgba(109, 109, 109, 0.5);
   --container-color: #121312; 
   --light-accent-color: #808280; 
 
@@ -34,7 +34,8 @@ h3{
 }
 
 .divider{
-  width: 560px;
+  width: 70vw;
+  max-width: 560px;
   border-bottom: 1px solid var(--primary-color) ;
 }
 

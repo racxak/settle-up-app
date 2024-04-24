@@ -60,7 +60,7 @@ return(
     <h1>SETTLEUP</h1>
     <div className='divider divider-position'> </div>
     <h2>LISTS</h2>
-    {lists && <div id='scrollbar' className='screolbar lists-container'> 
+    {lists && <div id='scrollbar' className='lists-container'> 
       {lists.map((list)=><ListPanel index={list.id} name={list.name} id={list.id}  iOwn={list.i_own} owned={list.owned}> </ListPanel>)}
        </div>}
 

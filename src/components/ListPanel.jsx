@@ -1,7 +1,9 @@
 import "./ListPanel.css"
 import Line from "../assets/line.png"
+import { useNavigate } from "react-router-dom";
 export default function ListPanel({name,id, iOwn, owned }){
-  return(<div className="list-panel-container"> 
+	const navigate = useNavigate();
+  return(<div onClick={() =>  navigate(`/list/${id}`, { state: { name, id, iOwn, owned} })} className="list-panel-container"> 
   <span id="list-name-id">
   <h3>{name}</h3>
   <p id="id">#{id}</p> 
