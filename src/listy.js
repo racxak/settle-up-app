@@ -1,9 +1,24 @@
 export const LISTS = [
   {
     name: "lista 1",
-    membbers: [
-      "kasia, ola"
-      ],
+    members: ["Kasia", "Ola"],
+    items:[
+    {
+      id: 1345,
+      text: "milk",
+      completed: false,
+    },
+    {
+      id: 1346,
+      text: "eggs",
+      completed: false,
+    },
+    {
+      id: 1347,
+      text: "chocolate",
+      completed: true,
+    }
+  ],
     id: 123456,
     owned: [
       {
@@ -25,9 +40,7 @@ export const LISTS = [
   },
   {
     name: "lista 2",
-    membbers: [
-      "kasia, ola"
-      ],
+    members: ["Kasia", "Ola"],
     id: 121446,
     owned: [
       {
@@ -49,9 +62,7 @@ export const LISTS = [
   },
   {
     name: "lista 3",
-    membbers: [
-      "kasia, ola"
-      ],
+    members: ["Kasia", "Ola"],
     id: 123456,
     owned: [
       {

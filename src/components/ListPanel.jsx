@@ -1,14 +1,15 @@
 import "./ListPanel.css"
 import Line from "../assets/line.png"
 import { useNavigate } from "react-router-dom";
-export default function ListPanel({name,id, iOwn, owned }){
+export default function ListPanel({name,id, iOwn, owned, listMembers, items }){
 	const navigate = useNavigate();
-  return(<div onClick={() =>  navigate(`/list/${id}`, { state: { name, id, iOwn, owned} })} className="list-panel-container"> 
+  return(<div onClick={() =>  navigate(`/list/${id}`, { state: { name, id, iOwn, owned, listMembers, items} })} 
+
+  className="list-panel-container"> 
   <span id="list-name-id">
   <h3>{name}</h3>
   <p id="id">#{id}</p> 
   </span>
-
 
   {iOwn.map(item => (
       <span id="horizontal-layout"> <div id="line"></div><p id="owe" key={item.name}> You owe {item.amount}zł to {item.name}  </p></span>

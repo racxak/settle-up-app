@@ -61,7 +61,8 @@ return(
     <div className='divider divider-position'> </div>
     <h2>LISTS</h2>
     {lists && <div id='scrollbar' className='lists-container'> 
-      {lists.map((list)=><ListPanel index={list.id} name={list.name} id={list.id}  iOwn={list.i_own} owned={list.owned}> </ListPanel>)}
+      {lists.map((list)=><ListPanel index={list.id} name={list.name} id={list.id}  iOwn={list.i_own} owned={list.owned} listMembers={list.members} items={list.items}>
+        </ListPanel>)}
        </div>}
 
     {!lists && <div className='empty-info'><p> There's nothing here yet.</p> 
