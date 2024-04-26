@@ -1,26 +1,26 @@
 .main-title {
-	font-size: clamp(2.5rem, 6vw, 5rem);
-	letter-spacing: clamp(1rem, 4vw, 3rem);;
+	font-size: clamp(1.5rem, 6vw, 5rem);
+	letter-spacing: clamp(0.1rem, 4vw, 3rem);;
 	position: relative;
 	animation-name: title;
 	animation-duration: 4s;
 	text-align: center;
 	z-index: 10;
-	margin-top: 200px;
-	margin-bottom: 125px;
+	margin-top: 25vh;
+	margin-bottom: 10vh;
 	text-align: center;
 }
 
 @keyframes title {
 	0% {
-		font-size: 105px;
+		font-size: clamp(2.5rem, 8vw, 15rem);
 	}
 	25% {
-		font-size: 105px;
+		font-size: clamp(2.5rem, 8vw, 15rem);
 	}
 	100% {
-		margin-top: 200px;
-		font-size: 73px;
+		margin-top: 25vh;
+		font-size: clamp(2.5rem, 6vw, 5rem);
 	}
 }
 
@@ -29,6 +29,7 @@
 	height: 993px;
 	border-radius: 50%;
 	position: absolute;
+	z-index: 0;
 	/* TODO - pozycjonowanie */
 }
 
@@ -53,6 +54,12 @@
 	cursor: pointer;
 	right: 15px;
 	bottom: 15px;
+	width: 4vw;
+	height: 4vw;
+	max-width: 2rem;
+	max-height: 2rem;
+	min-width: 1.2rem;
+	min-height: 1.2rem;
 	/* TODO: hover active */
 }
 

@@ -10,7 +10,7 @@ form label{
 }
 
 form input{
-  margin-bottom: 30px;
+  margin-bottom: 4vh;
   background-color: transparent;
   border: 1px solid white;
   border-radius: 8px;
@@ -24,10 +24,13 @@ form input{
   margin-right: auto;
   max-width: 30rem;
   padding-left: 40vw;
+  z-index: 1;
 }
 
 .form-login-register input{
-  width: 25.15rem;
+  min-width: 15.15rem; 
+  max-width: 25.15rem; 
+  width: 40vw;
 }
 
 .input-with-button {
@@ -70,3 +73,12 @@ form input{
       text-decoration: underline;
       }
  
+
+
+      @media (max-width: 885px) {
+       
+        .form-login-register{
+          padding-left: 0;
+        }
+
+      }

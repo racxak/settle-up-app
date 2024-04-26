@@ -5,7 +5,9 @@
   padding: 2rem;
   background-color: var(--background-color);
   color: var(--text-color);
-
+  max-height: 65vh;
+  overflow-y: hidden;
+  overflow: scroll;
 }
 
 .modal-external[open] {
@@ -41,10 +43,10 @@
   margin: 0 0 0.25rem 0;
   font-size: 2rem;
   text-transform: uppercase;
-  min-width: 27.4rem;
+  /* min-width: 27.4rem; */
 } 
 
-.modal-internal p {
+.modal-internal  p {
   margin: 0.5rem 0;
   font-size: 16px;
   max-width: 30vw;
@@ -53,7 +55,11 @@
 
 .about{
   text-align: justify;
-  min-width: 27rem;
+  /* min-width: 27rem; */
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  max-width: 30rem;
+  min-width: 260px;
 }
 
 .modal-internal p strong {
