@@ -1,6 +1,6 @@
 #shopping-list-container{
   background-color: var(--container-color);
-  width: 34vw;
+  width: 40vw;
   max-height: 40vh;
   border-radius: 8px;
   margin: 4vh 3vw;
@@ -24,18 +24,39 @@
   padding: 1vh;
   color: white;  
   font-family: "Montserrat", sans-serif;
-  margin-right: 22vw;
+  margin-right: 24.5vw;
 }
 
+#shopping-list-container li {
+ margin: 1vh 1vw; 
+}
+
+#shopping-list-container ul {
+  padding-left: 1.7vw; 
+ }
+#shopping-list-container li input {
+  margin-right: 1vw; 
+ }
 
 #shopping-list-container > :first-child  >:nth-child(2){
   width: 20px;
   height: 20px;
 }
 
+
 #shopping-list{
   list-style: none;
 }
 #shopping-list > :first-child{
   font-weight: 300; 
+}
+
+.add-bill-container{
+  max-height: 7vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-bill-btn{
+  height: 3vh !important;
 }

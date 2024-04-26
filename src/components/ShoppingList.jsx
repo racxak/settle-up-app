@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AddIcon from "./../assets/icon-button-add.png"
+import Button from "./Button"
 import "./ShoppingList.css"
 import {LISTS} from "../listy"
 function ShoppingList({initialItems}) {
@@ -40,6 +41,7 @@ function ShoppingList({initialItems}) {
       <ul id='shopping-list'>
         {items.map(item => (
           <li key={item.id}>
+            {/* todo: ładniejsze checkboxy */}
             <input
               type="checkbox"
               checked={item.completed}
@@ -49,6 +51,11 @@ function ShoppingList({initialItems}) {
           </li>
         ))}
       </ul>
+ 
+      <div id='horizontal-layout' className='add-bill-container'>
+        <input id="i-paid" type="text" placeholder='$$$' />
+        <Button className="add-bill-btn"> add bill </Button>
+      </div>
     </div>
   );
 }
