@@ -6,8 +6,8 @@
   background-color: var(--background-color);
   color: var(--text-color);
   max-height: 65vh;
-  overflow-y: hidden;
-  overflow: scroll;
+  overflow-y: scroll;
+  max-width: 35rem;
 }
 
 .modal-external[open] {
@@ -36,6 +36,7 @@
  flex-direction: column;
  justify-content: center;
  align-items: center;
+ overflow-x: hidden;
 }
 
 .modal-internal h2 {
@@ -44,6 +45,7 @@
   font-size: 2rem;
   text-transform: uppercase;
   /* min-width: 27.4rem; */
+
 } 
 
 .modal-internal  p {

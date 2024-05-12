@@ -5,6 +5,8 @@
   flex-direction: column; 
   display: flex;
   align-items: flex-start;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 #wrapper{
@@ -55,7 +57,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  width: 20vw;
+  /* width: 20vw; */
   margin-top: 10.5vh;
 }
 
@@ -94,4 +96,7 @@
     rgba(205, 58, 255, 0.05) 46%,
     rgba(15, 15, 15, 0.05) 100% 
   );
+}
+#left-container{
+  width:100vw;
 }

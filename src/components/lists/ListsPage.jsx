@@ -57,6 +57,7 @@ const handleCreateList = (event) => {
 
 return(
 <><div className="lists-page"> 
+    {/* TODO : responsivbes */}
     <h1>SETTLEUP</h1>
     <div className='divider divider-position'> </div>
     <h2>LISTS</h2>

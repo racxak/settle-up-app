@@ -25,8 +25,8 @@ export default function Login({ changeForm }) {
 
 			<div className="form-buttons-layout">
 				<span>
-					You dont have an account yet?
-					<button onClick={() => changeForm("register")}>Sign up</button>
+					You dont have an account yet? {" "}
+					<button onClick={() => changeForm("register")}> Sign up</button>
 				</span>
 				<button type="submit">
 					<img src={ArrowIcon} alt="arrow-icon" />

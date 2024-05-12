@@ -10,16 +10,24 @@ export default function SingleList(){
   const location = useLocation();
   const {name, id, iOwn, owned, listMembers, items} = location.state; 
   const [eventsActive, setEventsActive] = useState('users');
+  const [depstShown, setDepstShown] = useState(true);
+
+
+  function handleDeptsShown(){
+    setDepstShown(prev => !prev);
+  }
+  
 return(
-  <div className="single-list-page"> 
+  <div id="scrollbar"className="single-list-page"> 
   <div id="wrapper">
   <div id='left-container'>
      <div id="page-header">
      <h1>SETTLEUP</h1>
       <div className='divider'> </div>
-      <span id='horizontal-layout' className='placement'><h2 id="list-name">{name} </h2><h2 id="list-id">#{id}</h2></span>
+      <span onClick ={handleDeptsShown} id='horizontal-layout' className='placement'><h2 id="list-name">{name} </h2><h2 id="list-id">#{id}</h2></span>
       </div>
 
+      {depstShown &&
       <div id="debts">
       {iOwn.map(item => (
       <span id="horizontal-layout"> <div id="line"></div><p id="owe" key={item.name}> You owe {item.amount}zł to {item.name}  </p></span>
@@ -29,10 +37,13 @@ return(
        <span id="horizontal-layout">  <div id="line"></div><p id="owes" key={item.name}> {item.name} owes you {item.amount}zł</p> </span>
       ))}
       </div>
+}
 
-      <ShoppingList initialItems={items}></ShoppingList>
-      {console.log(items)}
+      {/* <ShoppingList initialItems={items}></ShoppingList> */}
+    
       </div>
+     
+
       <div id='right-container'>
         <div id="horizontal-layout" >
           <img onClick={()=>setEventsActive('events')} id="icon-events" src={IconEvents} alt="icon-events" />
@@ -51,6 +62,7 @@ return(
         
       </div>
       </div>
+      <ShoppingList initialItems={items}></ShoppingList>
 
     </div>
   );

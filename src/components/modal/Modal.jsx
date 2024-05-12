@@ -23,7 +23,7 @@ const Modal = forwardRef(function Modal(
 	return createPortal(
 		<dialog ref={dialog} className="modal-external" onClose={onClose}
 		>
-		<div className="modal-internal">
+		<div id="scrollbar" className="modal-internal ">
 		{children}
 		</div>	
       <form method="dialog" onSubmit={onClose}>
