@@ -6,6 +6,7 @@ import IconUsers from "../assets/icon-users.png"
 import "./SingleList.css"
 import { useState } from 'react';
 import ShoppingList from './ShoppingList';
+import Navbar from './navbar/Navbar';
 export default function SingleList(){
   const location = useLocation();
   const {name, id, iOwn, owned, listMembers, items} = location.state; 
@@ -19,13 +20,9 @@ export default function SingleList(){
   
 return(
   <div id="scrollbar"className="single-list-page"> 
-  <div id="wrapper">
-  <div id='left-container'>
-     <div id="page-header">
-     <h1>SETTLEUP</h1>
-      <div className='divider'> </div>
-      <span onClick ={handleDeptsShown} id='horizontal-layout' className='placement'><h2 id="list-name">{name} </h2><h2 id="list-id">#{id}</h2></span>
-      </div>
+     <Navbar >
+      <span onClick ={handleDeptsShown} id='horizontal-layout' className='placement'> <h2 id="list-name">{name} </h2><h2 id="list-id">#{id}</h2></span>
+      </Navbar>
 
       {depstShown &&
       <div id="debts">
@@ -41,10 +38,8 @@ return(
 
       {/* <ShoppingList initialItems={items}></ShoppingList> */}
     
-      </div>
-     
 
-      <div id='right-container'>
+      {/* <div id='right-container'>
         <div id="horizontal-layout" >
           <img onClick={()=>setEventsActive('events')} id="icon-events" src={IconEvents} alt="icon-events" />
           <img onClick={()=>setEventsActive('users')} id="icon-users" src={IconUsers} alt="icon-users" />
@@ -55,13 +50,13 @@ return(
         </div> }
         {eventsActive==="events" && <div className='users-or-events-container events-lists'>
          {/* TODO : events */} 
-         <p>event</p>
+         {/* <p>event</p>
          <hr />
          <p>event</p>
         </div> }
         
-      </div>
-      </div>
+      </div> */}
+      
       <ShoppingList initialItems={items}></ShoppingList>
 
     </div>

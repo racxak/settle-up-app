@@ -1,13 +1,14 @@
 #shopping-list-container{
+  min-width: 21rem;
   background-color: var(--container-color);
   width: 40vw;
   max-width: 600px; 
   border-radius: 8px;
   margin: auto; 
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
   padding: 2vh 2vw;
-  transform: translateY(-85%); 
 }
 
 .add-new-item-container {

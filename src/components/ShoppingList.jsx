@@ -98,7 +98,7 @@ function ShoppingList({initialItems}) {
      <p>*UserName* paid <>{bill.costs}</> zł for: </p>
      <div id={bill.id}> <ul>{bill.completedItems.map((item) => <li>{item.text}</li>)}</ul>  
      </div> </div>
-     <hr className='divider' />
+     <div className='divider' />
      </>)}
   
      <Button className= "settle-up-button" onClick={handleSettleUp}>SettleUp</Button>

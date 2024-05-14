@@ -34,7 +34,7 @@ h3{
 }
 
 .divider{
-  width: 70vw;
+  width: 100%;
   max-width: 560px;
   border-bottom: 1px solid var(--primary-color) ;
 }

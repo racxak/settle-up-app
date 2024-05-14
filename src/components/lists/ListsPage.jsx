@@ -7,6 +7,7 @@ import '../auth/Form.css';
 import { GoPlus } from "react-icons/go";
 import {LISTS} from "../../listy";
 import ListPanel from '../ListPanel';
+import Navbar from '../navbar/Navbar';
 
 export default function ListsPage(){
 const dialog = useRef();
@@ -56,11 +57,12 @@ const handleCreateList = (event) => {
 };
 
 return(
-<><div className="lists-page"> 
+<><div id="scrollbar" className="lists-page"> 
     {/* TODO : responsivbes */}
-    <h1>SETTLEUP</h1>
-    <div className='divider divider-position'> </div>
-    <h2>LISTS</h2>
+    <Navbar>
+    <h2 className='lists'>LISTS</h2>
+    </Navbar>
+    
     {lists && <div id='scrollbar' className='lists-container'> 
       {lists.map((list)=><ListPanel index={list.id} name={list.name} id={list.id}  iOwn={list.i_own} owned={list.owned} listMembers={list.members} items={list.items}>
         </ListPanel>)}
