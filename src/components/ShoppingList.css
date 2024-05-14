@@ -39,29 +39,55 @@
 
 #cb{
   accent-color: var(--accent-color);
+  margin-right: 0;
 }
 
-.add-new-item-container  > :first-child {
+
+.add-new-item-container > :first-child {
+  display: flex;
+  flex-direction: row; 
+  justify-content: space-between;
+  width:-webkit-fill-available;
+  height: 1vh;
+}
+
+.add-new-item-container > :first-child > :first-child {
   background-color: transparent;
-  border:none;
+  border: none;
   border-radius: 8px;
   padding: 1vh;
-  color: white;  
+  color: white;
   font-family: "Montserrat", sans-serif;
+  width: 65%;
+}
+
+.add-new-item-container > :first-child > :nth-child(2) {
+  background-color: transparent;
+  border: none;
+  border-radius: 0px;
+  padding: 1vh;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  width: 38%;
+  border-left: 1px solid  ;
+  border-color: var(--secondary-color);
+  max-width: 6rem;
 }
 
 #shopping-list-container li {
- margin: 1vh 1vw; 
+ margin: 0 1vw; 
 }
 
 #shopping-list-container ul {
   padding-left: 1.7vw; 
+  padding-right: 1.7vw; 
+
  }
 #shopping-list-container li input {
   margin-right: 1vw; 
  }
 
-.add-new-item-container >:nth-child(2){
+.add-new-item-container>:first-child >:nth-child(3) {
   width: 20px;
   height: 20px;
 }
@@ -81,15 +107,16 @@
 }
 
 .add-bill-btn{
- padding: 0.5vw !important;
+ 
  margin-bottom: 0vh;
+ padding: clamp(0.7rem, 0.5vw, 20px);
 }
 
 #i-paid{
   background-color: transparent;
   border: 1px solid white;
   border-radius: 8px;
-  padding: 0.5vw;
+  padding: clamp(0.7rem, 0.5vw, 20px);
   color: white;  
   font-family: "Montserrat", sans-serif;
 }
@@ -111,3 +138,19 @@
 .bill{
   margin: 1.5vh 2.5vw;
 }
+
+.item-amount{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width:-webkit-fill-available;
+}
+
+.list-item{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 4vh;
+}
+

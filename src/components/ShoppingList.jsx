@@ -6,19 +6,23 @@ import {LISTS} from "../listy"
 function ShoppingList({initialItems}) {
   const [items, setItems] = useState(initialItems);
   const [newItem, setNewItem] = useState('');
+  const [newItemAmount, setNewItemAmount] = useState('');
+
   const [bills, setBills] = useState([]);
 
   const [billsActive, setBillsActive] = useState (false); 
   const [costs, setCosts] = useState('');
   const handleAddItem = () => {
-    if (newItem.trim() !== '') {
+    if (newItem.trim() !== '' && newItemAmount.trim() !== '') {
       const newItemObject = {
         id: Date.now(), 
         text: newItem,
-        completed: false 
+        completed: false,
+        amount: newItemAmount, 
       };
       setItems(prevItems => [...prevItems, newItemObject]);
       setNewItem(''); 
+      setNewItemAmount('');
     }
   };
 
@@ -61,31 +65,42 @@ function ShoppingList({initialItems}) {
     </span>
     {!billsActive && <>
       <div className='add-new-item-container'>
-      <input
-        type="text"
-        value={newItem}
-        onChange={e => setNewItem(e.target.value)}
-        placeholder="Add new item"
-      />
-     <img onClick={handleAddItem}src={AddIcon} alt="icon-add-btn" /></div>
+        <form onSubmit={handleAddItem}>
+          <input
+            type="text"
+            value={newItem}
+            onChange={e => setNewItem(e.target.value)}
+            placeholder="Item name"
+          />
+         <input
+            type="number"
+            value={newItemAmount}
+            onChange={e => setNewItemAmount(e.target.value)}
+            placeholder="Item amount"
+          />
+      <img onClick={handleAddItem}src={AddIcon} alt="icon-add-btn" />
+      </form>
+    </div>
 
       <ul id='shopping-list'>
         {items.map(item => (
-          <li key={item.id}>
-            {/* todo: ładniejsze checkboxy */}
+          <li className="list-item" key={item.id}>
             <input
               id = "cb"
               type="checkbox"
               checked={item.completed}
               onChange={() => toggleItemCompletion(item.id)}
             />
-            {item.text}
+            <span className='item-amount'>
+            <p>{item.text}</p>
+            <p>{item.amount}</p>
+            </span>
           </li>
         ))}
       </ul>
  
       <div id='horizontal-layout' className='add-bill-container'>
-      <input id="i-paid" type="text" placeholder='$$$' required value={costs} onChange={e => setCosts(e.target.value)} />
+      <input id="i-paid" type="number" placeholder='$$$' required value={costs} onChange={e => setCosts(e.target.value)} />
           <Button onClick={handleAddBill} className="add-bill-btn"> add bill </Button>
       </div> 
       </>
