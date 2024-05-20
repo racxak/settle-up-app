@@ -5,29 +5,72 @@ import ArrowIcon from "../../assets/arrow-icon.png";
 export default function Register({ changeForm }) {
 	const [InputType, Icon] = usePasswordToogle();
 
-	const [fullName, setFullName] = useState("");
+	const [firstName, setFirstName] = useState("");
+	const [lastName, setLastName] = useState("");
+
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
 	// TODO: errors
 	const [errorMsg, setErrorMsg] = useState("");
-	const [successMsg, setSuccessrMsg] = useState("");
+	const [successMsg, setSuccessMsg] = useState("");
 
-	function handleSignUp(e) {
-		e.preventDefault();
-		console.log(fullName, email, password);
-	}
+	const handleSignUp = async (e) => {
+    e.preventDefault();
 
+		const user = {
+      firstname: firstName,
+      lastname: lastName,
+      email,
+      password
+    };
+
+    try {
+			const response = await fetch('http://localhost:8080/api/v1/users/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+      });
+
+      if (response.ok) {
+        setSuccessMsg("User registered successfully!");
+        setErrorMsg("");
+      } else if(response.status===500) {
+			setErrorMsg('This email has already been registered');
+			setSuccessMsg("");}
+			else{
+        setErrorMsg('Error registering user');
+        setSuccessMsg("");
+      }
+    } catch (error) {
+      setErrorMsg('An unexpected error occurred');
+      setSuccessMsg("");
+    }
+  };
+
+	
 	return (
-		<form className="form-login-register" onSubmit={handleSignUp}>
-			<label> Full Name </label>
+		<form className="form-login-register register" onSubmit={handleSignUp}>
+			<label> First name </label>
 			<input
 				type="text"
 				required
-				placeholder="Jhon Doe"
-				onChange={(e) => setFullName(e.target.value)}
-				value={fullName}
+				placeholder="Jhon"
+				onChange={(e) => setFirstName(e.target.value)}
+				value={firstName}
 			></input>
+
+		<label> Last name </label>
+			<input
+				type="text"
+				required
+				placeholder="Doe"
+				onChange={(e) => setLastName(e.target.value)}
+				value={lastName}
+			></input>
+
 
 			<label> Email </label>
 			<input
@@ -49,6 +92,9 @@ export default function Register({ changeForm }) {
 				></input>
 				<span className="password-toggle-icon">{Icon}</span>
 			</div>
+
+			{successMsg && <p style={{ color: 'green' }}>{successMsg}</p>}
+      {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
 
 			<div className="form-buttons-layout">
 				<span>

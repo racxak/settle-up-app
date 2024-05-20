@@ -6,9 +6,25 @@
 	animation-duration: 4s;
 	text-align: center;
 	z-index: 10;
-	margin-top: 25vh;
-	margin-bottom: 10vh;
+	margin-top: 20vh;
+	margin-bottom: 9vh;
 	text-align: center;
+}
+
+.register input{
+	margin-bottom: 0.5rem;
+}
+
+@media (max-height: 768px){
+	.main-title {
+		margin-top: 15vh;
+		margin-bottom: 10vh;
+		text-align: center;
+	}
+	.register {
+		margin-top: -5vh;
+	}
+
 }
 
 @keyframes title {
@@ -19,8 +35,23 @@
 		font-size: clamp(2.5rem, 8vw, 15rem);
 	}
 	100% {
-		margin-top: 25vh;
+		margin-top: 15vh;
 		font-size: clamp(2.5rem, 6vw, 5rem);
+	}
+}
+
+@media (max-width: 768px) {
+	@keyframes title {
+		0% {
+			font-size: clamp(2.5rem, 8vw, 15rem);
+		}
+		25% {
+			font-size: clamp(2.5rem, 8vw, 15rem);
+		}
+		100% {
+			margin-top: 20vh;
+			font-size: clamp(2.5rem, 6vw, 5rem);
+		}
 	}
 }
 

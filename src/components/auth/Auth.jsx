@@ -6,8 +6,6 @@ import Form from "./Form";
 export default function Auth() {
 	const dialog = useRef();
 
-	//   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
 	function handleDialogOpen() {
 		dialog.current.open();
 	}

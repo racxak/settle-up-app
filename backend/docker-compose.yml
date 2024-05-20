@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  database:
+    image: postgres:14-alpine
+    container_name: shopping-list-database
+    restart: unless-stopped
+    volumes: ["shopping-list-db-data:/var/lib/postgresql"]
+    ports: ["5432:5432"]
+    expose: ["5432"]
+    env_file: [".env"]
+
+  backend-app:
+    image: registry.gitlab.com/shopping-app7155915/backend:0.2.2
+    container_name: shopping-list-app
+    ports: ["8080:8080"]
+    depends_on: [database]
+    env_file: [".env"]
+
+volumes:
+  shopping-list-db-data:
