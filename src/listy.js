@@ -219,3 +219,5 @@ export const LISTS = [
   },
   
 ];
+
+export const API = "http://localhost:8080/api/v1"

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import usePasswordToogle from "../../hooks/usePasswordToogle";
 import ArrowIcon from "../../assets/arrow-icon.png";
+import {API } from "../../listy.js"
 
 export default function Register({ changeForm }) {
 	const [InputType, Icon] = usePasswordToogle();
@@ -11,7 +12,6 @@ export default function Register({ changeForm }) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
-	// TODO: errors
 	const [errorMsg, setErrorMsg] = useState("");
 	const [successMsg, setSuccessMsg] = useState("");
 
@@ -24,9 +24,9 @@ export default function Register({ changeForm }) {
       email,
       password
     };
-
+		const url = API + "/users/register";
     try {
-			const response = await fetch('http://localhost:8080/api/v1/users/register', {
+			const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
