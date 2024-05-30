@@ -35,6 +35,11 @@
 
 .empty-info{
   text-align: center;
+  width: -webkit-fill-available;
+  height: 70vh;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .add-button{

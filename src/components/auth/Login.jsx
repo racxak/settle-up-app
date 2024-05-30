@@ -11,11 +11,10 @@ export default function Login({ changeForm }) {
 	const navigate = useNavigate();
 	const [errorMsg, setErrorMsg] = useState("");
 	const [successMsg, setSuccessMsg] = useState("");
-  const [authData, setAuthData] = useState({ email: '', password: '' });
+  const [authData, setAuthData] = useState({ email: 's@gmail.com', password: '123456' });
   const { login } = useContext(AuthContext); 
 
 	 const handleLogin = async (e) => {
-  	console.log(authData);
 		e.preventDefault();
     
 		const auth = {
@@ -38,6 +37,7 @@ export default function Login({ changeForm }) {
         setSuccessMsg("User logged in successfully!");
         setErrorMsg("");
 				const userId = jwtDecode(data.jwt).id;
+				console.log(data.jwt)
         login(data.jwt, userId);
 				navigate("/lists");
 	  	} else if(response.status===403) {

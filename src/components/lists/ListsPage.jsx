@@ -1,6 +1,6 @@
 import './ListsPage.css'
 import IconButtonAdd from '../../assets/icon-button-add.png'
-import { useRef,useState } from 'react';
+import { useRef, useState, useContext, useEffect } from 'react';
 import Modal from '../modal/Modal';
 import Button from '../Button';
 import '../auth/Form.css';
@@ -8,20 +8,48 @@ import { GoPlus } from "react-icons/go";
 import {LISTS} from "../../listy";
 import ListPanel from '../ListPanel';
 import Navbar from '../navbar/Navbar';
-
+import { AuthContext } from '../../contexts/authContext';
+import {API} from "../../listy"
 export default function ListsPage(){
 const dialog = useRef();
 const emailRef = useRef(null);
 const listNameRef = useRef(null);
 
 //testowe  
-const [lists,setLists] = useState(LISTS);
-const [listsEmpty,setListsEmpty] = useState(false);
-const [members, setMembers] = useState("");
-
+const [lists,setLists] = useState();
+const [members, setMembers] = useState([]);
+const { token, userId } = useContext(AuthContext);
+const [errorMsg, setErrorMsg] = useState("");
 function handleDialogOpen (){
   dialog.current.open();
 }
+
+useEffect(() => {
+    fetchShoppingLists();
+},[dialog]);
+
+const fetchShoppingLists = async () => {
+  const url = `${API}/shopping-lists?userId=${userId}&offset=0&limit=1000`;
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      setLists(data.page);
+      console.log(data);
+    } else {
+      console.error('Failed to fetch shopping lists');
+    }
+  } catch (error) {
+    console.error('An unexpected error occurred while fetching shopping lists');
+  }
+};
+
 
 function handleDialogClose (){ 
   dialog.current.close();
@@ -32,44 +60,57 @@ const handleAddNewMember = () => {
   if (emailRef.current.checkValidity()) { 
     if(email){
     setMembers(prevMembers => [...prevMembers, email]); 
-    emailRef.current.value = '';
+    emailRef.current.value = "";
     }
   }
 };
 
-const handleCreateList = (event) => {
-  event.preventDefault();
+const handleCreateList = async (e) => {
+  e.preventDefault();
   const listName = listNameRef.current.value.trim();
-  if (listName && members.length !== 0) {
+  if (listName && members.length !== 0 ) {
     const newList = {
       name: listName,
-      members: members,
-      id: Date.now(),  
-      owned: [],
-      i_own: []
+      ownerId: userId,
+      members: members
     };
-    setLists(prevLists => [...prevLists, newList]);
-       emailRef.current.value = ''; 
+		const url = API + `/shopping-lists?userId=${userId}`;
+    try {
+			const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newList)
+      });
 
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data)
+        setErrorMsg("");
+      } else if(response.status!==201) {
+			setErrorMsg(response.message);}
+    } catch (error) {
+      setErrorMsg('An unexpected error occurred');
+    }
     setMembers([]);  
     handleDialogClose();
   }
 };
 
 return(
-<><div id="scrollbar" className="lists-page"> 
-    {/* TODO : responsivbes */}
+<><div onClick={fetchShoppingLists} id="scrollbar" className="lists-page"> 
     <Navbar>
     <h2 className='lists'>LISTS</h2>
     </Navbar>
     
     {lists && <div id='scrollbar' className='lists-container'> 
-      {lists.map((list)=><ListPanel index={list.id} name={list.name} id={list.id}  iOwn={list.i_own} owned={list.owned} listMembers={list.members} items={list.items}>
+      {lists.map((list)=><ListPanel key={list.id} name={list.name} id={list.id}  owner={list.owner} userBalance={list.userBalance}>
         </ListPanel>)}
        </div>}
 
     {!lists && <div className='empty-info'><p> There's nothing here yet.</p> 
-      <p>Add your first team and take control of your finances</p></div> }
+      <p>Add your first team and take control of your finances.</p></div> }
 
 
     <button className='add-button button-icon' onClick={handleDialogOpen}>
@@ -90,7 +131,6 @@ return(
 			</div>
       <ul>
         {members && members.map((member, index) => (
-          // TODO : wygląd i walidacja (komunikaty błedu)
           <li key={index}>{member}</li> 
         ))}
       </ul>
