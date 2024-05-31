@@ -37,7 +37,6 @@ export default function Login({ changeForm }) {
         setSuccessMsg("User logged in successfully!");
         setErrorMsg("");
 				const userId = jwtDecode(data.jwt).id;
-				console.log(data.jwt)
         login(data.jwt, userId);
 				navigate("/lists");
 	  	} else if(response.status===403) {

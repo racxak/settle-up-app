@@ -20,13 +20,18 @@ const [lists,setLists] = useState();
 const [members, setMembers] = useState([]);
 const { token, userId } = useContext(AuthContext);
 const [errorMsg, setErrorMsg] = useState("");
+const [email, setEmail] = useState(""); 
+
+
 function handleDialogOpen (){
   dialog.current.open();
 }
 
 useEffect(() => {
+  if (token && userId) {
     fetchShoppingLists();
-},[dialog]);
+  }
+}, [token, userId]);
 
 const fetchShoppingLists = async () => {
   const url = `${API}/shopping-lists?userId=${userId}&offset=0&limit=1000`;
@@ -85,6 +90,7 @@ const handleCreateList = async (e) => {
       });
 
       if (response.ok) {
+        fetchShoppingLists();
         const data = await response.json();
         console.log(data)
         setErrorMsg("");
@@ -93,13 +99,14 @@ const handleCreateList = async (e) => {
     } catch (error) {
       setErrorMsg('An unexpected error occurred');
     }
+
     setMembers([]);  
     handleDialogClose();
   }
 };
 
 return(
-<><div onClick={fetchShoppingLists} id="scrollbar" className="lists-page"> 
+<><div id="scrollbar" className="lists-page"> 
     <Navbar>
     <h2 className='lists'>LISTS</h2>
     </Navbar>
