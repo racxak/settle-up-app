@@ -43,12 +43,30 @@ function ShoppingList({initialItems, getItems, listId}) {
     }
   };
 
-  const toggleItemCompletion = (id) => {
-    setItems(prevItems => 
-      prevItems.map(item => 
-        item.id === id ? { ...item, completed: !item.completed } : item
-      )
-    );
+  const toggleItemCompletion = async(itemId) => {
+      const itemToUpdate = initialItems.find(item => item.id === itemId);
+      const url = `${API}/shopping-lists/${listId}/items/${itemId}`;
+      const updatedItem = {
+        name: itemToUpdate.name,
+        quantity: itemToUpdate.quantity,
+        purchased: !itemToUpdate.purchased, 
+      };
+  
+      try {
+        const response = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(updatedItem)
+        });
+  
+        if (response.ok) {
+          getItems();
+        } 
+      } catch (error) {
+        console.log('An unexpected error occurred');
+      }
   };
 
 
@@ -124,7 +142,7 @@ function ShoppingList({initialItems, getItems, listId}) {
             <input
               id = "cb"
               type="checkbox"
-              checked={item.completed}
+              checked={item.purchased}
               onChange={() => toggleItemCompletion(item.id)}
             />
             <span className='item-amount'>
