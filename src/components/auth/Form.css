@@ -4,7 +4,6 @@ form{
 }
 
 form label{
-  font-weight: 300;
   margin-bottom: 10px;
   font-family: "Montserrat", sans-serif;
 }
@@ -37,6 +36,11 @@ form input{
   display: flex;
   position: relative;
   flex-direction: column;
+}
+
+
+.input-with-button input[type="email"] {
+ margin-bottom: 0;
 }
 
 .password-toggle-icon {

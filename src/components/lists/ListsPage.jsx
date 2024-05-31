@@ -12,8 +12,6 @@ import { AuthContext } from '../../contexts/authContext';
 import {API} from "../../listy"
 export default function ListsPage(){
 const dialog = useRef();
-const emailRef = useRef(null);
-const listNameRef = useRef(null);
 
 //testowe  
 const [lists,setLists] = useState();
@@ -21,7 +19,7 @@ const [members, setMembers] = useState([]);
 const { token, userId } = useContext(AuthContext);
 const [errorMsg, setErrorMsg] = useState("");
 const [email, setEmail] = useState(""); 
-
+const [listName, setListName] = useState(""); 
 
 function handleDialogOpen (){
   dialog.current.open();
@@ -57,25 +55,23 @@ const fetchShoppingLists = async () => {
 
 
 function handleDialogClose (){ 
+  setListName("");
+  setMembers([]);
   dialog.current.close();
 }
 
 const handleAddNewMember = () => {
-  const email = emailRef.current.value;
-  if (emailRef.current.checkValidity()) { 
     if(email){
     setMembers(prevMembers => [...prevMembers, email]); 
-    emailRef.current.value = "";
+    setEmail("");
     }
-  }
 };
 
 const handleCreateList = async (e) => {
   e.preventDefault();
-  const listName = listNameRef.current.value.trim();
   if (listName && members.length !== 0 ) {
     const newList = {
-      name: listName,
+      name: listName.trim(),
       ownerId: userId,
       members: members
     };
@@ -99,11 +95,17 @@ const handleCreateList = async (e) => {
     } catch (error) {
       setErrorMsg('An unexpected error occurred');
     }
-
-    setMembers([]);  
     handleDialogClose();
   }
 };
+
+const handleKeyPress = (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    handleAddNewMember();
+  }
+};
+
 
 return(
 <><div id="scrollbar" className="lists-page"> 
@@ -127,14 +129,16 @@ return(
   
   <Modal ref={dialog} onClose={handleDialogClose}>
   <h3 className='add-new-list-container-header'>Create a new list or join an existing one</h3>
-  <form className='new-list'>
+  <form className='new-list' onSubmit={handleCreateList}>
     <label>List name</label>
-    <input type="text" ref={listNameRef} />
-    <p>Add team member</p>
+    <input type="text"  onChange={(e)=>setListName(e.target.value)} value={listName} />
+    <p id="add-team-member">Add team member</p>
     <label>Email</label>
-    <div className="input-with-button">
-				<input className='input-with-btn' type="email" ref={emailRef}/>
-				<span className='add-new-list-member'><GoPlus onClick= {handleAddNewMember}  className='add-new-list-member-btn'/></span>
+    <div className="input-with-button" onKeyDown={handleKeyPress}>
+        
+				<input type="email" onChange={(e)=>setEmail(e.target.value)} value={email} />
+				<span className='add-new-list-member'><GoPlus  onClick= {handleAddNewMember}  className='add-new-list-member-btn'/></span>
+        
 			</div>
       <ul>
         {members && members.map((member, index) => (
@@ -142,16 +146,16 @@ return(
         ))}
       </ul>
 
-    <div className='divider-with-text'>
+    {/* <div className='divider-with-text'>
       <hr />
       <p className='divider-text'>or join an existing one</p>
       <hr />
     </div> 
     <label>List code</label>
-    <input type="text" />
+    <input type="text" /> */}
     <div className='buttons-container'>
-    <Button>Join list</Button>
-    <Button style={"filled"} onClick={handleCreateList}>Create list</Button>
+    {/* <Button>Join list</Button> */}
+    <Button style={"filled"} type="submit"> Create list</Button>
     </div>
   </form>
 </Modal> </>);
