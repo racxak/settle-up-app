@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, {useState } from 'react';
 import AddIcon from "./../assets/icon-button-add.png"
 import Button from "./Button"
 import "./ShoppingList.css"
-import {LISTS} from "../listy"
+
 function ShoppingList({initialItems}) {
   const [items, setItems] = useState(initialItems);
   const [newItem, setNewItem] = useState('');

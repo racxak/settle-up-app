@@ -44,7 +44,6 @@ const fetchShoppingLists = async () => {
     if (response.ok) {
       const data = await response.json();
       setLists(data.page);
-      console.log(data);
     } else {
       console.error('Failed to fetch shopping lists');
     }
@@ -87,8 +86,6 @@ const handleCreateList = async (e) => {
 
       if (response.ok) {
         fetchShoppingLists();
-        const data = await response.json();
-        console.log(data)
         setErrorMsg("");
       } else if(response.status!==201) {
 			setErrorMsg(response.message);}
@@ -114,7 +111,7 @@ return(
     </Navbar>
     
     {lists && <div id='scrollbar' className='lists-container'> 
-      {lists.map((list)=><ListPanel key={list.id} name={list.name} id={list.id}  owner={list.owner} userBalance={list.userBalance}>
+      {lists.map((list)=><ListPanel key={list.id} name={list.name} listId={list.id}  owner={list.owner} userBalance={list.userBalance}>
         </ListPanel>)}
        </div>}
 
@@ -154,7 +151,7 @@ return(
     <label>List code</label>
     <input type="text" /> */}
     <div className='buttons-container'>
-    {/* <Button>Join list</Button> */}
+    <Button>Join list</Button>
     <Button style={"filled"} type="submit"> Create list</Button>
     </div>
   </form>

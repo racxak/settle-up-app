@@ -1,30 +1,64 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import IconButtonAdd from "../assets/icon-button-add.png"
 import IconEvents from "../assets/icon-events.png"
 import IconUsers from "../assets/icon-users.png"
 
 import "./SingleList.css"
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ShoppingList from './ShoppingList';
 import Navbar from './navbar/Navbar';
+import { API } from '../listy';
+import { AuthContext } from '../contexts/authContext';
+
 export default function SingleList(){
+  const { listId } = useParams();
+  
+  const {token} = useContext(AuthContext);
   const location = useLocation();
-  const {name, id, iOwn, owned, listMembers, items} = location.state; 
   const [eventsActive, setEventsActive] = useState('users');
-  const [depstShown, setDepstShown] = useState(true);
+  const [debtsShown, setDebstShown] = useState(true);
+  const [listData, setListData]=useState([]);
+
+  useEffect(()=>{
+    if (token){
+    fetchShoppingList() }
+
+  }, [token])
 
 
   function handleDeptsShown(){
-    setDepstShown(prev => !prev);
+    setDebstShown(prev => !prev);
   }
+
+  const fetchShoppingList = async () => {
+    const url = `${API}/shopping-lists/${listId}`;
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        setListData(data);
+      } else {
+        console.error('Failed to fetch shopping lists');
+      }
+    } catch (error) {
+      console.error('An unexpected error occurred while fetching shopping lists');
+    }
+  };
+  
   
 return(
   <div id="scrollbar"className="single-list-page"> 
      <Navbar >
-      <span onClick ={handleDeptsShown} id='horizontal-layout' className='placement'> <h2 id="list-name">{name} </h2><h2 id="list-id">#{id}</h2></span>
+      <span onClick ={handleDeptsShown} id='horizontal-layout' className='placement'> <h2 id="list-name"> {listData.name} </h2><h2 id="list-id">#{listId}</h2></span>
       </Navbar>
 
-      {depstShown &&
+      {/* {debtsShown &&
       <div id="debts">
       {iOwn.map(item => (
       <span id="horizontal-layout"> <div id="line"></div><p id="owe" key={item.name}> You owe {item.amount}zł to {item.name}  </p></span>
@@ -34,7 +68,7 @@ return(
        <span id="horizontal-layout">  <div id="line"></div><p id="owes" key={item.name}> {item.name} owes you {item.amount}zł</p> </span>
       ))}
       </div>
-}
+} */}
 
       {/* <ShoppingList initialItems={items}></ShoppingList> */}
     
@@ -57,7 +91,7 @@ return(
         
       </div> */}
       
-      <ShoppingList initialItems={items}></ShoppingList>
+      {/* <ShoppingList initialItems="items"></ShoppingList> */}
 
     </div>
   );
