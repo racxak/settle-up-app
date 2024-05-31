@@ -18,11 +18,11 @@ export default function SingleList(){
   const [eventsActive, setEventsActive] = useState('users');
   const [debtsShown, setDebstShown] = useState(true);
   const [listData, setListData]=useState([]);
-
+  const [items, setItems] = useState([]); 
   useEffect(()=>{
     if (token){
-    fetchShoppingList() }
-
+    fetchShoppingList() 
+    fetchShoppingListItems() }
   }, [token])
 
 
@@ -51,6 +51,26 @@ export default function SingleList(){
     }
   };
   
+  const fetchShoppingListItems = async () => {
+    const url = `${API}/shopping-lists/${listId}/items`;
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+  
+      if (response.ok) {
+        const items = await response.json();
+        setItems(items.page);
+      } else {
+        console.error('Failed to fetch shopping list items');
+      }
+    } catch (error) {
+      console.error('An unexpected error occurred while fetching shopping list items');
+    }
+  };
   
 return(
   <div id="scrollbar"className="single-list-page"> 
@@ -91,7 +111,7 @@ return(
         
       </div> */}
       
-      {/* <ShoppingList initialItems="items"></ShoppingList> */}
+      <ShoppingList initialItems={items} getItems={fetchShoppingListItems} listId ={listId}> </ShoppingList> 
 
     </div>
   );

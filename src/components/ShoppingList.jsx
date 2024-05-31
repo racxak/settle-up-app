@@ -2,25 +2,42 @@ import React, {useState } from 'react';
 import AddIcon from "./../assets/icon-button-add.png"
 import Button from "./Button"
 import "./ShoppingList.css"
+import { API } from '../listy';
 
-function ShoppingList({initialItems}) {
+function ShoppingList({initialItems, getItems, listId}) {
   const [items, setItems] = useState(initialItems);
   const [newItem, setNewItem] = useState('');
   const [newItemAmount, setNewItemAmount] = useState('');
-
   const [bills, setBills] = useState([]);
 
   const [billsActive, setBillsActive] = useState (false); 
   const [costs, setCosts] = useState('');
-  const handleAddItem = () => {
+
+
+  const handleAddItem = async() => {
     if (newItem.trim() !== '' && newItemAmount.trim() !== '') {
       const newItemObject = {
-        id: Date.now(), 
-        text: newItem,
-        completed: false,
-        amount: newItemAmount, 
+        name: newItem,
+        quantity: newItemAmount, 
       };
-      setItems(prevItems => [...prevItems, newItemObject]);
+
+    const url = `${API}/shopping-lists/${listId}/items`;
+    try {
+			const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newItemObject)
+      });
+
+      if (response.ok) {
+        getItems();
+      } else if(response.status!==201) {
+			console.log(response.message);}
+    } catch (error) {
+      console.log('An unexpected error occurred');
+    }
       setNewItem(''); 
       setNewItemAmount('');
     }
@@ -83,7 +100,7 @@ function ShoppingList({initialItems}) {
     </div>
 
       <ul id='shopping-list'>
-        {items.map(item => (
+        {initialItems && initialItems.map(item => (
           <li className="list-item" key={item.id}>
             <input
               id = "cb"
@@ -92,8 +109,8 @@ function ShoppingList({initialItems}) {
               onChange={() => toggleItemCompletion(item.id)}
             />
             <span className='item-amount'>
-            <p>{item.text}</p>
-            <p>{item.amount}</p>
+            <p>{item.name}</p>
+            <p>{item.quantity}</p>
             </span>
           </li>
         ))}
