@@ -3,7 +3,7 @@ import AddIcon from "./../assets/icon-button-add.png"
 import Button from "./Button"
 import "./ShoppingList.css"
 import { API } from '../listy';
-
+import { GoX } from "react-icons/go";
 function ShoppingList({initialItems, getItems, listId}) {
   const [items, setItems] = useState(initialItems);
   const [newItem, setNewItem] = useState('');
@@ -75,6 +75,25 @@ function ShoppingList({initialItems, getItems, listId}) {
     setBills("");
   }
 
+  const deleteItem = async(itemId) => {
+    console.log("?" + itemId);
+    const url = `${API}/shopping-lists/${listId}/items/${itemId}`;
+    try {
+			const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (response.ok) {
+        getItems();
+      }
+      } catch (error) {
+      console.log('An unexpected error occurred');
+      }
+    }
+
   return (
     <div id='shopping-list-container'>
       <span> <button className={!billsActive ? 'active' : 'unactive'} onClick={handleToggleView}>Shopping List</button>
@@ -101,7 +120,7 @@ function ShoppingList({initialItems, getItems, listId}) {
 
       <ul id='shopping-list'>
         {initialItems && initialItems.map(item => (
-          <li className="list-item" key={item.id}>
+          <li className="list-item"  key={item.id}>
             <input
               id = "cb"
               type="checkbox"
@@ -112,6 +131,7 @@ function ShoppingList({initialItems, getItems, listId}) {
             <p>{item.name}</p>
             <p>{item.quantity}</p>
             </span>
+            <button className='delete-item' onClick={() => deleteItem(item.id)}><GoX /> </button>
           </li>
         ))}
       </ul>

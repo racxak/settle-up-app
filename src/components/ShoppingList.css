@@ -129,6 +129,15 @@
   color: var(--background-color-rgba);
 }
 
+.delete-item, .change-item {
+  margin-right: -32px;
+  display: none; 
+  color: var(--background-color-rgba);
+  background-color: transparent;
+  font-size: 20px;
+  border: none;
+}
+
 .settle-up-button{
   margin: auto;
   margin-top: 1.5rem;
@@ -144,6 +153,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  position: relative;
   width:-webkit-fill-available;
 }
 
@@ -154,3 +164,7 @@
   height: 4vh;
 }
 
+.list-item:hover .delete-item, 
+.list-item:hover .change-item {
+  display: flex; 
+}
