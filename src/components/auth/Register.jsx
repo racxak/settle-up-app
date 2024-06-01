@@ -99,7 +99,7 @@ export default function Register({ changeForm }) {
 			<div className="form-buttons-layout">
 				<span>
 					Already have an account?{" "}
-					<button onClick={() => changeForm("login")}> Sign in</button>
+					<button type="button" onClick={() => changeForm("login")}> Sign in</button>
 				</span>
 				<button type="submit">
 					<img src={ArrowIcon} alt="arrow-icon" />

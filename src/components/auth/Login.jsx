@@ -15,7 +15,7 @@ export default function Login({ changeForm }) {
   const { login } = useContext(AuthContext); 
 
 	 const handleLogin = async (e) => {
-		e.preventDefault();
+		 e.preventDefault();
     
 		const auth = {
       email: authData.email,
@@ -67,7 +67,7 @@ export default function Login({ changeForm }) {
 			<div className="form-buttons-layout">
 				<span>
 					You dont have an account yet? 
-					<button onClick={() => changeForm("register")}> Sign up</button>
+					<button type="button" onClick={() => changeForm("register")}> Sign up</button>
 				</span>
 				<button type="submit">
 					<img src={ArrowIcon} alt="arrow-icon" />
