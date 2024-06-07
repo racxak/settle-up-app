@@ -72,7 +72,6 @@ form .new-list{
   display: flex;
   align-items: center;
   text-align: center;
-  color: #fff; /* Dostosuj do koloru tekstu z obrazka */
 }
 
 .divider-with-text hr{
@@ -89,12 +88,8 @@ form .new-list{
   margin-bottom: 1rem;
 }
 .buttons-container{
-
-  /* CSS for 2 buttons
-   justify-content: space-between;
-  display: flex; */
-  margin: auto;
-  margin-top: 1rem;
+  justify-content: space-between;
+  display: flex;
 }
 
 .add-new-list-member{

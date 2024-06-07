@@ -1,25 +1,26 @@
-import "./ListsPage.css";
-import IconButtonAdd from "../../assets/icon-button-add.png";
+import "./AllListsPage.css";
+import IconButtonAdd from "../assets/icon-button-add.png";
 import { useRef, useState, useContext, useEffect } from "react";
-import Modal from "../modal/Modal";
-import Button from "../Button";
-import "../auth/Form.css";
+import Modal from "./modal/Modal";
+import Button from "./Button";
+import "./auth/Form.css";
 import { GoPlus } from "react-icons/go";
-import { LISTS } from "../../listy";
-import ListPanel from "../ListPanel";
-import Navbar from "../navbar/Navbar";
-import { AuthContext } from "../../contexts/authContext";
-import { API } from "../../listy";
-export default function ListsPage() {
+import ListPanel from "./ListPanel";
+import Navbar from "./navbar/Navbar";
+import { AuthContext } from "../contexts/authContext";
+import { API } from "../listy";
+
+export default function AllListsPage() {
 	const dialog = useRef();
 
 	//testowe
-	const [lists, setLists] = useState();
+	const [lists, setLists] = useState([]);
 	const [members, setMembers] = useState([]);
 	const { token, userId } = useContext(AuthContext);
 	const [errorMsg, setErrorMsg] = useState("");
 	const [email, setEmail] = useState("");
 	const [listName, setListName] = useState("");
+	const [invitationCode, setInvitationCode] = useState("");
 
 	function handleDialogOpen() {
 		dialog.current.open();
@@ -105,14 +106,49 @@ export default function ListsPage() {
 		}
 	};
 
+	const handleJoinList = async (e) => {
+		e.preventDefault();
+		if (invitationCode.length !== 0) {
+			const consumeInvitation = {
+				userId: userId,
+				token: token.trim(),
+			};
+			const url = API + `/invitations/tokens`;
+			try {
+				const response = await fetch(url, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(consumeInvitation),
+				});
+
+				
+				if (response.status === 501) {
+          console.log("halo");
+          setErrorMsg("Not Implemented");
+        } else if (response.ok) {
+          fetchShoppingLists();
+          setErrorMsg("");
+          handleDialogClose();
+        } else {
+          const errorData = await response.json();
+          setErrorMsg(errorData.message || `Error: ${response.status} ${response.statusText}`);
+        }
+      } catch (error) {
+        setErrorMsg("An unexpected error occurred");
+        console.error(error);
+      }
+		}
+	};
 	return (
 		<>
 			<div id="scrollbar" className="lists-page">
 				<Navbar>
 					<h2 className="lists">LISTS</h2>
 				</Navbar>
-        
-				{lists && lists.length !=0 && (
+
+				{lists && lists.length != 0 && (
 					<div id="scrollbar" className="lists-container">
 						{lists.map((list) => (
 							<ListPanel
@@ -168,15 +204,21 @@ export default function ListsPage() {
 							members.map((member, index) => <li key={index}>{member}</li>)}
 					</ul>
 
-					{/* <div className='divider-with-text'>
-      <hr />
-      <p className='divider-text'>or join an existing one</p>
-      <hr />
-    </div> 
-    <label>List code</label>
-    <input type="text" /> */}
+					<div className="divider-with-text">
+						<hr />
+						<p className="divider-text">or join an existing one</p>
+						<hr />
+					</div>
+					<label>Invitation code</label>
+
+					<input
+						type="text"
+						onChange={(e) => setInvitationCode(e.target.value)}
+						value={invitationCode}
+					/>
+					{errorMsg && <p>{errorMsg}</p>}
 					<div className="buttons-container">
-						{/* <Button> Join list</Button> */}
+						<Button onClick={handleJoinList}> Join list</Button>
 						<Button style={"filled"} type="submit">
 							Create list
 						</Button>
