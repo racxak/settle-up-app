@@ -43,11 +43,14 @@
   margin-right: 10px ;
 }
 .users-or-events-container{
-  width: 100%;
-  margin: 1vw;
+  width: 15vw;
+  margin: 1rem;
   padding: 1vw 3vw;
   border-radius: 8px;
   height: 50vh;
+}
+.user-or-event-btn{
+  justify-content: flex-end;
 }
 
 .users-list{
@@ -67,4 +70,11 @@
     rgba(205, 58, 255, 0.05) 46%,
     rgba(15, 15, 15, 0.05) 100% 
   );
+}
+
+#shopping-list-wrapper{
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  justify-content: space-evenly;
 }

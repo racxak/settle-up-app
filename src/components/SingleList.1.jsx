@@ -1,9 +1,6 @@
 import { useLocation, useParams } from "react-router-dom";
 import IconEvents from "../assets/icon-events.png";
 import IconUsers from "../assets/icon-users.png";
-import AddIcon from "./../assets/icon-button-add.png";
-
-import "./SingleList.css";
 import { useContext, useEffect, useState } from "react";
 import ShoppingList from "./ShoppingList";
 import Navbar from "./navbar/Navbar";
@@ -15,7 +12,7 @@ export default function SingleList() {
 
 	const { token } = useContext(AuthContext);
 	const location = useLocation();
-	const [usersOrEventsActive, setUsersOrEventsActive] = useState("");
+	const [eventsActive, setEventsActive] = useState("users");
 	const [debtsShown, setDebstShown] = useState(true);
 	const [listData, setListData] = useState([]);
 	const [items, setItems] = useState([]);
@@ -32,7 +29,7 @@ export default function SingleList() {
 	}
 
 	function sideBarChange(change) {
-		setUsersOrEventsActive((prev) => {
+		setEventsActive((prev) => {
 			if (change === "events" && change !== prev) {
 				return "events";
 			} else if (change === "users" && change !== prev) {
@@ -112,10 +109,6 @@ export default function SingleList() {
 			);
 		}
 	};
-
-  const openAddListMember = () => {};
-
-  
 	return (
 		<div id="scrollbar" className="single-list-page">
 			<Navbar>
@@ -131,16 +124,16 @@ export default function SingleList() {
 			</Navbar>
 
 			{/* {debtsShown &&
-      <div id="debts">
-      {iOwn.map(item => (
-      <span id="horizontal-layout"> <div id="line"></div><p id="owe" key={item.name}> You owe {item.amount}zł to {item.name}  </p></span>
-      ))}
-      
-      {owned.map(item => (
-       <span id="horizontal-layout">  <div id="line"></div><p id="owes" key={item.name}> {item.name} owes you {item.amount}zł</p> </span>
-      ))}
-      </div>
-} */}
+            <div id="debts">
+            {iOwn.map(item => (
+            <span id="horizontal-layout"> <div id="line"></div><p id="owe" key={item.name}> You owe {item.amount}zł to {item.name}  </p></span>
+            ))}
+            
+            {owned.map(item => (
+             <span id="horizontal-layout">  <div id="line"></div><p id="owes" key={item.name}> {item.name} owes you {item.amount}zł</p> </span>
+            ))}
+            </div>
+      } */}
 
 			<div id="shopping-list-wrapper">
 				<ShoppingList
@@ -148,6 +141,7 @@ export default function SingleList() {
 					getItems={fetchShoppingListItems}
 					listId={listId}
 				>
+					{" "}
 				</ShoppingList>
 
 				<div id="user-or-event-wrapper">
@@ -166,10 +160,8 @@ export default function SingleList() {
 						/>
 					</div>
 
-					{/* Lista członków grupy */}
-					{usersOrEventsActive === "users" && (
+					{eventsActive === "users" && (
 						<div className="users-or-events-container users-list">
-            <img onClick={openAddListMember} src={AddIcon} alt="add-button" className="add-btn-small" />
 							{members.map((member) => (
 								<div key={member.id}>
 									<p> {member.name}</p>
@@ -180,8 +172,7 @@ export default function SingleList() {
 						</div>
 					)}
 
-					{/* Lista zdarzeń wykonanych w obrębie listy */}
-					{usersOrEventsActive === "events" && (
+					{eventsActive === "events" && (
 						<div className="users-or-events-container events-lists"></div>
 					)}
 				</div>

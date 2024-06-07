@@ -111,8 +111,8 @@ export default function ListsPage() {
 				<Navbar>
 					<h2 className="lists">LISTS</h2>
 				</Navbar>
-
-				{lists && (
+        
+				{lists && lists.length !=0 && (
 					<div id="scrollbar" className="lists-container">
 						{lists.map((list) => (
 							<ListPanel
@@ -126,7 +126,7 @@ export default function ListsPage() {
 					</div>
 				)}
 
-				{!lists && (
+				{lists && lists.length == 0 && (
 					<div className="empty-info">
 						<p> There's nothing here yet.</p>
 						<p>Add your first team and take control of your finances.</p>

@@ -1,18 +1,22 @@
-import React, {useState } from 'react';
+import React, {useContext, useState } from 'react';
 import AddIcon from "./../assets/icon-button-add.png"
 import Button from "./Button"
 import "./ShoppingList.css"
 import { API } from '../listy';
 import { GoX } from "react-icons/go";
+import { AuthContext } from '../contexts/authContext';
 function ShoppingList({initialItems, getItems, listId}) {
   const [items, setItems] = useState(initialItems);
   const [newItem, setNewItem] = useState('');
   const [newItemAmount, setNewItemAmount] = useState('');
-  const [bills, setBills] = useState([]);
-
+  const [bills, setBills] = useState([{}]);
+  const {userId, token} = useContext(AuthContext);
   const [billsActive, setBillsActive] = useState (false); 
-  const [costs, setCosts] = useState('');
+  const [costs, setCosts] = useState(0);
 
+  const handleToggleView = () => {
+    setBillsActive(prev => !prev);
+  };
 
   const handleAddItem = async() => {
     if (newItem.trim() !== '' && newItemAmount.trim() !== '') {
@@ -70,28 +74,72 @@ function ShoppingList({initialItems, getItems, listId}) {
   };
 
 
-  const handleAddBill = () => {
-    if (costs && items.some(item => item.completed)) {
-      const completedItems = items.filter(item => item.completed);
+  const handleAddBill = async () => {
+    // if (costs && items.some(item => item.purchased)) {
+    //   const completedItemsIDs = initialItems.filter(item => item.purchased).map(item => item.id);
+      const completedItemsIDs = initialItems.filter(item => item.purchased).map(item => item.id);
       const newBill = {
-        id: Date.now(),
-        completedItems: completedItems,
-        // personId: ;
-        costs: costs
+        total: costs,
+        comment: "",
+        itemIds: completedItemsIDs,
+        ownerId: userId
       };
-      setBills(prevBills => [...prevBills, newBill]);
-      setItems(prevItems => prevItems.filter(item => !item.completed));
-      setCosts('');
-    }
-  };
-  const handleToggleView = () => {
-    setBillsActive(prev => !prev);
-  };
+
+      console.log(newBill);
+
+      const url = `${API}/shopping-lists/1/bills`;
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newBill),
+        });
+
+        if (response.ok) {
+          getAllBills();
+          setCosts(0);
+        }
+      } catch (error) {
+        console.log("An unexpected error occurred");
+      }
+
+      // setBills(prevBills => [...prevBills, newBill]);
+      // setItems(prevItems => prevItems.filter(item => !item.purchased));
+      setCosts(0);
+    };
+  
 
 
   const handleSettleUp = () => {
-    setBills("");
+    // setBills("");
   }
+
+  const getAllBills = async() => {
+    const url = `${API}/shopping-lists/${listId}/bills`;
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+  
+      if (response.ok) {
+        const fetchedBills = await response.json();
+        setBills(fetchedBills.page);
+        console.log(bills);
+      } else {
+        console.error('Failed to fetch shopping list items');
+      }
+    } catch (error) {
+      console.error('An unexpected error occurred while fetching shopping list items');
+    }
+
+  }
+
+    
 
   const deleteItem = async(itemId) => {
     console.log("?" + itemId);
@@ -111,6 +159,8 @@ function ShoppingList({initialItems, getItems, listId}) {
       console.log('An unexpected error occurred');
       }
     }
+
+
 
   return (
     <div id='shopping-list-container'>
@@ -132,7 +182,7 @@ function ShoppingList({initialItems, getItems, listId}) {
             onChange={e => setNewItemAmount(e.target.value)}
             placeholder="Item amount"
           />
-      <img onClick={handleAddItem}src={AddIcon} alt="icon-add-btn" />
+      <img className='add-btn-small' onClick={handleAddItem}src={AddIcon} alt="icon-add-btn" />
       </form>
     </div>
 
@@ -165,12 +215,13 @@ function ShoppingList({initialItems, getItems, listId}) {
     {bills && bills.map((bill) =><>
    
     <div div className='bill'>
-     <p>*UserName* paid <>{bill.costs}</> zł for: </p>
-     <div id={bill.id}> <ul>{bill.completedItems.map((item) => <li>{item.text}</li>)}</ul>  
+     <p>{bill.owner.name} paid <>{bill.total}</> zł for: </p>
+     <div id={bill.id}>
+       {/* <ul>{bill.completedItems.map((item) => <li>{item.text}</li>)}</ul>   */}
      </div> </div>
      <div className='divider' />
      </>)}
-  
+   
      <Button className= "settle-up-button" onClick={handleSettleUp}>SettleUp</Button>
     </>}
     </div>
