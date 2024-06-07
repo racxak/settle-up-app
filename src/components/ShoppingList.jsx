@@ -9,12 +9,15 @@ function ShoppingList({initialItems, getItems, listId}) {
   const [items, setItems] = useState(initialItems);
   const [newItem, setNewItem] = useState('');
   const [newItemAmount, setNewItemAmount] = useState('');
-  const [bills, setBills] = useState([{}]);
+  const [bills, setBills] = useState([]);
   const {userId, token} = useContext(AuthContext);
   const [billsActive, setBillsActive] = useState (false); 
   const [costs, setCosts] = useState(0);
 
   const handleToggleView = () => {
+    if(!billsActive && bills.length === 0 ){
+      getAllBills();
+    }
     setBillsActive(prev => !prev);
   };
 
@@ -107,7 +110,6 @@ function ShoppingList({initialItems, getItems, listId}) {
 
       // setBills(prevBills => [...prevBills, newBill]);
       // setItems(prevItems => prevItems.filter(item => !item.purchased));
-      setCosts(0);
     };
   
 
@@ -139,7 +141,7 @@ function ShoppingList({initialItems, getItems, listId}) {
 
   }
 
-    
+
 
   const deleteItem = async(itemId) => {
     console.log("?" + itemId);
