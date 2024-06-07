@@ -214,15 +214,15 @@ function ShoppingList({initialItems, getItems, listId}) {
       }
     {billsActive && <>
     
-    {bills && bills.map((bill) =><>
+    {bills && bills.map((bill) =><div key={bill.id}>
    
-    <div div className='bill'>
+    <div className='bill'>
      <p>{bill.owner.name} paid <>{bill.total}</> zł for: </p>
      <div id={bill.id}>
        {/* <ul>{bill.completedItems.map((item) => <li>{item.text}</li>)}</ul>   */}
      </div> </div>
      <div className='divider' />
-     </>)}
+     </div>)}
    
      <Button className= "settle-up-button" onClick={handleSettleUp}>SettleUp</Button>
     </>}

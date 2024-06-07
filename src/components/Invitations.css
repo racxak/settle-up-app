@@ -1,0 +1,19 @@
+.invitations-btns-wrapper{
+  display: flex;
+  margin-top: 1rem;
+  width: 30vw;
+}
+
+.invitations-btns-wrapper button{
+  background-color: transparent;
+  color: white;
+  border: none;
+  padding-left: 0;
+  padding-right: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.invitation-status *{
+  font-family: "Montserrat", sans-serif;
+}

@@ -2,16 +2,18 @@ import { useLocation, useParams } from "react-router-dom";
 import IconEvents from "../assets/icon-events.png";
 import IconUsers from "../assets/icon-users.png";
 import AddIcon from "./../assets/icon-button-add.png";
-
+import Modal from "./modal/Modal";
 import "./SingleList.css";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import ShoppingList from "./ShoppingList";
 import Navbar from "./navbar/Navbar";
 import { API } from "../listy";
 import { AuthContext } from "../contexts/authContext";
+import Invitations from "./Invitations";
 
 export default function SingleList() {
 	const { listId } = useParams();
+	const dialog = useRef();
 
 	const { token } = useContext(AuthContext);
 	const location = useLocation();
@@ -113,9 +115,13 @@ export default function SingleList() {
 		}
 	};
 
-  const openAddListMember = () => {};
+	function handleDialogClose() {
+		dialog.current.close();
+	}
 
-  
+	function handleDialogOpen() {
+		dialog.current.open();
+	}
 	return (
 		<div id="scrollbar" className="single-list-page">
 			<Navbar>
@@ -124,7 +130,6 @@ export default function SingleList() {
 					id="horizontal-layout"
 					className="placement"
 				>
-					{" "}
 					<h2 id="list-name"> {listData.name} </h2>
 					<h2 id="list-id">#{listId}</h2>
 				</span>
@@ -147,8 +152,7 @@ export default function SingleList() {
 					initialItems={items}
 					getItems={fetchShoppingListItems}
 					listId={listId}
-				>
-				</ShoppingList>
+				></ShoppingList>
 
 				<div id="user-or-event-wrapper">
 					<div id="horizontal-layout" className="user-or-event-btn">
@@ -169,11 +173,19 @@ export default function SingleList() {
 					{/* Lista członków grupy */}
 					{usersOrEventsActive === "users" && (
 						<div className="users-or-events-container users-list">
-            <img onClick={openAddListMember} src={AddIcon} alt="add-button" className="add-btn-small" />
+							<img
+								onClick={handleDialogOpen}
+								src={AddIcon}
+								alt="add-button"
+								className="add-btn-small add-new-member-btn"
+							/>
+							<Modal ref={dialog} onClose={handleDialogClose}>
+								<Invitations listId={listId}/>
+							</Modal>
 							{members.map((member) => (
 								<div key={member.id}>
-									<p> {member.name}</p>
-									<p> {member.email}</p>
+									<p className="member-name"> {member.name}</p>
+									<p className="member-email"> {member.email}</p>
 									<hr />
 								</div>
 							))}

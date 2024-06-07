@@ -12,6 +12,8 @@ export const AuthProvider = ({ children }) => {
     const userId = localStorage.getItem("userId");
     if (token && userId) {
       dispatch({ type: LOGIN, payload: { token, userId } }); 
+    }else{
+      dispatch({type: LOGOUT}); 
     }
   }, []);
 
@@ -23,6 +25,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    localStorage.remove("token");
+    localStorage.remove("userId");
     dispatch({ type: LOGOUT });
   };
 

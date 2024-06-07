@@ -78,3 +78,16 @@
   width: 100vw;
   justify-content: space-evenly;
 }
+
+.add-new-member-btn{
+  margin-top: 1.5rem; 
+}
+.member-name {
+  font-weight: bold;
+  margin-bottom: 0rem;
+}
+.member-email{
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+  font-size: 14px;
+}
