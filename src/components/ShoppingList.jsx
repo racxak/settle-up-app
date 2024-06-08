@@ -13,6 +13,8 @@ function ShoppingList({initialItems, getItems, listId}) {
   const {userId, token} = useContext(AuthContext);
   const [billsActive, setBillsActive] = useState (false); 
   const [costs, setCosts] = useState(0);
+  const [noCosts, setNoCosts] = useState(false);
+
 
   const handleToggleView = () => {
     if(!billsActive && bills.length === 0 ){
@@ -76,10 +78,13 @@ function ShoppingList({initialItems, getItems, listId}) {
       }
   };
 
-
   const handleAddBill = async () => {
-    // if (costs && items.some(item => item.purchased)) {
-    //   const completedItemsIDs = initialItems.filter(item => item.purchased).map(item => item.id);
+    if(costs ===0 ){
+      setNoCosts(true);
+    }
+
+    if (costs != 0  && items.some(item => item.purchased)) {
+      setNoCosts(false);
       const completedItemsIDs = initialItems.filter(item => item.purchased).map(item => item.id);
       const newBill = {
         total: costs,
@@ -99,7 +104,6 @@ function ShoppingList({initialItems, getItems, listId}) {
           },
           body: JSON.stringify(newBill),
         });
-
         if (response.ok) {
           getAllBills();
           setCosts(0);
@@ -107,12 +111,10 @@ function ShoppingList({initialItems, getItems, listId}) {
       } catch (error) {
         console.log("An unexpected error occurred");
       }
-
+    }
       // setBills(prevBills => [...prevBills, newBill]);
       // setItems(prevItems => prevItems.filter(item => !item.purchased));
     };
-  
-
 
   const handleSettleUp = () => {
     // setBills("");
@@ -163,7 +165,6 @@ function ShoppingList({initialItems, getItems, listId}) {
     }
 
 
-
   return (
     <div id='shopping-list-container'>
       <span> <button className={!billsActive ? 'active' : 'unactive'} onClick={handleToggleView}>Shopping List</button>
@@ -208,6 +209,7 @@ function ShoppingList({initialItems, getItems, listId}) {
  
       <div id='horizontal-layout' className='add-bill-container'>
       <input id="i-paid" type="number" placeholder='$$$' required value={costs} onChange={e => setCosts(e.target.value)} />
+          {noCosts && <p>Please enter the value you paid.</p>}
           <Button onClick={handleAddBill} className="add-bill-btn"> add bill </Button>
       </div> 
       </>

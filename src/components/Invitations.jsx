@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { API } from "../listy";
 import "./Invitations.css"
@@ -9,6 +9,8 @@ export default function Invitations({ listId }) {
 	const [errorMsg, setErrorMsg] = useState("");
 	const [succcesMsg, setSuccesMsg] = useState("");
   const [invitations, setInvitations] = useState([]);
+  const [invitationToken, setInvitationToken] = useState([]);
+
 	const { token} = useContext(AuthContext);
 
 
@@ -42,6 +44,25 @@ export default function Invitations({ listId }) {
 		}
 	};
 
+	const createInvitationToken = async () => {
+    const url = `${API}/invitations/${listId}/tokens`;
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setInvitationToken(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fetchInvitations = async (invitationStatus) => {
 		const url = `${API}/invitations?offset=0&limit=1000&listId=${listId}&invitationStatus=${invitationStatus}`;
@@ -73,6 +94,10 @@ export default function Invitations({ listId }) {
 		}
 	};
 
+	useEffect(()=>{
+		createInvitationToken();
+	},[])
+
 	return (
 		<>
 			<form className="new-list">
@@ -94,6 +119,7 @@ export default function Invitations({ listId }) {
 				</div>
 				{succcesMsg && <p>{succcesMsg}</p>}
 			</form>
+			{/* <p>{invitationToken.token} {invitationToken.validUntil}</p> */}
       <div className="invitation-status">
 			<span className="invitations-btns-wrapper">
       <button onClick={()=>fetchInvitations("PENDING")}>Pending</button>

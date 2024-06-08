@@ -70,12 +70,14 @@ export default function AllListsPage() {
 
 	const handleCreateList = async (e) => {
 		e.preventDefault();
-		if (listName && members.length !== 0) {
+		if (listName) {
 			const newList = {
 				name: listName.trim(),
 				ownerId: userId,
 				members: members,
-			};
+			}
+		
+
 			const url = API + `/shopping-lists?userId=${userId}`;
 			try {
 				const response = await fetch(url, {

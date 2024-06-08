@@ -4,7 +4,6 @@
   align-items: flex-start;
   margin-top: 4vh;
   margin-left: 3vw;
-  width: 100%;
 }
 
 #page-header h1{
@@ -18,4 +17,120 @@
   margin-left: 0;
   margin-right: 3vw;
   margin-top: 10px;
+}
+
+#navbar-wrapper{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#buttons-navabr-wrapper{
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+}
+
+#buttons-navabr-wrapper li span, .dropbtn {
+  background-color: transparent;
+  color: white;
+  border: none;
+  padding-left: 0;
+  padding-right: 10px;
+  font-weight: bold;
+  text-decoration: none;
+  letter-spacing: 2px;
+  align-items: center;
+  overflow: visible;
+}
+
+#buttons-navabr-wrapper li {
+  background-color: transparent;
+  color: white;
+  border: none;
+  padding-left: 0;
+  padding-right: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  align-items: center;
+}
+
+
+#buttons-navabr-wrapper ul{
+  display: flex;
+  flex-direction: row;
+}
+
+
+
+#buttons-navabr-wrapper button :first-child{ 
+  width: 20px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+
+li.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  min-width: 160px;
+  z-index: 1;
+  background-color: var(--container-color);
+  padding: 0px 5px;
+  border-radius: 8px;
+  margin-top: 10px;
+  margin-left: -10px;
+}
+
+.ivitations-counter{
+  z-index: 1;
+  margin-top: -27px;
+  margin-left: 220px;
+  position: absolute;
+  background-color: var(--accent-color);
+  min-width: 15px;
+  width: fit-content;
+  height: 15px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  border-radius: 25px;
+  font-size: 10px;
+}
+.dropdown-content span {
+  font-weight: 400 !important;
+  text-transform: none !important;
+  text-align: left;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 5px;
+}
+
+.dropdown-content span :nth-child(2) {
+  color: var(--primary-color);
+  margin-left: 5px;
+}
+
+
+.dropdown-content span :nth-child(3) {
+  color: var(--accent-color);
+  margin-left: 5px;
+  font-size: 20px;
+}
+
+.dropdown:hover .dropdown-content {
+  display: flex;
+  flex-direction: column;
 }

@@ -1,12 +1,13 @@
 import React, { createContext, useEffect, useReducer } from 'react';
 import { authReducer, initialState, LOGIN, LOGOUT } from '../reducers/authReducer';
+import { useNavigate } from 'react-router-dom';
 
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
@@ -25,8 +26,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.remove("token");
-    localStorage.remove("userId");
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    navigate("/");
     dispatch({ type: LOGOUT });
   };
 
