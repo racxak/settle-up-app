@@ -9,6 +9,7 @@ import ListPanel from "./ListPanel";
 import Navbar from "./navbar/Navbar";
 import { AuthContext } from "../contexts/authContext";
 import { API } from "../listy";
+import { RiDeleteBin2Line } from "react-icons/ri";
 
 export default function AllListsPage() {
 	const dialog = useRef();
@@ -18,6 +19,7 @@ export default function AllListsPage() {
 	const [members, setMembers] = useState([]);
 	const { token, userId } = useContext(AuthContext);
 	const [errorMsg, setErrorMsg] = useState("");
+	const [errorTokenMsg, setErrorTokenMsg] = useState("");
 	const [email, setEmail] = useState("");
 	const [listName, setListName] = useState("");
 	const [invitationCode, setInvitationCode] = useState("");
@@ -58,6 +60,8 @@ export default function AllListsPage() {
 	function handleDialogClose() {
 		setListName("");
 		setMembers([]);
+		setErrorMsg("");
+		setErrorTokenMsg("");
 		dialog.current.close();
 	}
 
@@ -70,34 +74,37 @@ export default function AllListsPage() {
 
 	const handleCreateList = async (e) => {
 		e.preventDefault();
-		if (listName) {
-			const newList = {
-				name: listName.trim(),
-				ownerId: userId,
-				members: members,
-			}
-		
 
-			const url = API + `/shopping-lists?userId=${userId}`;
-			try {
-				const response = await fetch(url, {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(newList),
-				});
+		const newList = {
+			name: listName.trim(),
+			ownerId: userId,
+			members: members,
+		};
 
-				if (response.ok) {
-					fetchShoppingLists();
-					setErrorMsg("");
-				} else if (response.status !== 201) {
-					setErrorMsg(response.message);
-				}
-			} catch (error) {
-				setErrorMsg("An unexpected error occurred");
+		const url = API + `/shopping-lists?userId=${userId}`;
+		try {
+			const response = await fetch(url, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(newList),
+			});
+
+			if (response.ok) {
+				fetchShoppingLists();
+				setErrorMsg("");
+				setErrorTokenMsg("");
+				handleDialogClose();
+			} else if (response.status !== 201) {
+				setErrorMsg(
+					"An unexpected error occurred - make sure that the added e-mails belong to users registered in the application and that the name of the list is provided"
+				);
+				setErrorTokenMsg("");
 			}
-			handleDialogClose();
+		} catch (error) {
+			setErrorMsg("An unexpected error occurred");
+			setErrorTokenMsg("");
 		}
 	};
 
@@ -110,39 +117,45 @@ export default function AllListsPage() {
 
 	const handleJoinList = async (e) => {
 		e.preventDefault();
-		if (invitationCode.length !== 0) {
-			const consumeInvitation = {
-				userId: userId,
-				token: token.trim(),
-			};
-			const url = API + `/invitations/tokens`;
-			try {
-				const response = await fetch(url, {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(consumeInvitation),
-				});
+		const consumeInvitation = {
+			userId: userId,
+			token: token.trim(),
+		};
+		const url = API + `/invitations/tokens`;
+		try {
+			const response = await fetch(url, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(consumeInvitation),
+			});
 
-				
-				if (response.status === 501) {
-          console.log("halo");
-          setErrorMsg("Not Implemented");
-        } else if (response.ok) {
-          fetchShoppingLists();
-          setErrorMsg("");
-          handleDialogClose();
-        } else {
-          const errorData = await response.json();
-          setErrorMsg(errorData.message || `Error: ${response.status} ${response.statusText}`);
-        }
-      } catch (error) {
-        setErrorMsg("An unexpected error occurred");
-        console.error(error);
-      }
+			if (response.status === 501) {
+				setErrorTokenMsg("Not implemented yet");
+				setErrorMsg("");
+			} else if (response.ok) {
+				fetchShoppingLists();
+				setErrorTokenMsg("");
+				handleDialogClose();
+				setErrorMsg("");
+			} else {
+				const errorData = await response.json();
+				setErrorTokenMsg(
+					errorData.message ||
+						`Error: ${response.status} ${response.statusText}`
+				);
+				setErrorMsg("");
+			}
+		} catch (error) {
+			setErrorTokenMsg("An unexpected error occurred");
+			setErrorMsg("");
+			console.error(error);
 		}
 	};
+
+	const deleteItem = (indexToDelete) => { setMembers(prevMembers => prevMembers.filter((_, index) => index !== indexToDelete));
+    }
 	return (
 		<>
 			<div id="scrollbar" className="lists-page">
@@ -190,10 +203,10 @@ export default function AllListsPage() {
 					<label>Email</label>
 					<div className="input-with-button" onKeyDown={handleKeyPress}>
 						<input
-							type="email"
+							type='email'
 							onChange={(e) => setEmail(e.target.value)}
 							value={email}
-						/>
+						></input>
 						<span className="add-new-list-member">
 							<GoPlus
 								onClick={handleAddNewMember}
@@ -201,10 +214,17 @@ export default function AllListsPage() {
 							/>
 						</span>
 					</div>
-					<ul>
+					<ul className={members && members.length > 0 ? "" : "hidden"}>
 						{members &&
-							members.map((member, index) => <li key={index}>{member}</li>)}
+							members.map((member, index) => (
+								<span className="single-member-wrapper">
+									<li key={index}>{member}</li>
+									<RiDeleteBin2Line className="delete-item" onClick={() => deleteItem(index)}/>
+								</span>
+							))}
 					</ul>
+
+					{errorMsg && <p className="error-msg">{errorMsg}</p>}
 
 					<div className="divider-with-text">
 						<hr />
@@ -217,8 +237,10 @@ export default function AllListsPage() {
 						type="text"
 						onChange={(e) => setInvitationCode(e.target.value)}
 						value={invitationCode}
-					/>
-					{errorMsg && <p>{errorMsg}</p>}
+						style={{ marginBottom: errorTokenMsg ? "0" : "" }}
+					></input>
+
+					{errorTokenMsg && <p className="error-msg">{errorTokenMsg}</p>}
 					<div className="buttons-container">
 						<Button onClick={handleJoinList}> Join list</Button>
 						<Button style={"filled"} type="submit">

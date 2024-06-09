@@ -60,11 +60,13 @@ form .new-list{
   margin-top: 1rem;
 }
 
+
 #add-team-member{
   font-weight: bold;
 }
 .new-list ul {
-  padding-left: 1.1rem;
+  margin: 20px 0px;
+  padding-left: 0;
   font-family: "Montserrat", sans-serif;
 }
 
@@ -102,4 +104,18 @@ form .new-list{
 .add-new-list-member-btn{
     font-size: 20px;
     color: var(--accent-color);
+}
+
+.hidden {
+  display: none;
+}
+
+.single-member-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.single-member-wrapper:hover :nth-child(2){
+    display: flex; 
+    color: var(--light-accent-color);
 }
