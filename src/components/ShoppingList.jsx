@@ -146,7 +146,6 @@ function ShoppingList({initialItems, getItems, listId}) {
 
 
   const deleteItem = async(itemId) => {
-    console.log("?" + itemId);
     const url = `${API}/shopping-lists/${listId}/items/${itemId}`;
     try {
 			const response = await fetch(url, {
