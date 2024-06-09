@@ -11,7 +11,7 @@ services:
     env_file: [".env"]
 
   backend-app:
-    image: registry.gitlab.com/shopping-app7155915/backend:0.3.0
+    image: registry.gitlab.com/shopping-app7155915/backend:1.0.1
     container_name: shopping-list-app
     ports: ["8080:8080"]
     depends_on: [database]

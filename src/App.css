@@ -67,3 +67,9 @@ h3{
   border-radius: 8px;
   background-color: var(--accent-color);
 }
+.error-msg{
+  color: #e71453;
+}
+.success-msg{
+  color: var(--primary-color);
+}

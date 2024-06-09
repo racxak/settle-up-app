@@ -1,6 +1,6 @@
 import "./Auth.css";
 import IconQuestionMark from "../../assets/icon-question-mark.png";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Modal from "../modal/Modal";
 import Form from "./Form";
 export default function Auth() {
@@ -11,6 +11,10 @@ export default function Auth() {
 	}
 
 	function handleDialogClose() {}
+
+	useEffect(()=>(
+		alert('Email: r@op.pl, password: !123ZiwG')
+	),[])
 
 	return (
 		<>

@@ -35,7 +35,6 @@
 		font-size: clamp(2.5rem, 8vw, 15rem);
 	}
 	100% {
-		margin-top: 15vh;
 		font-size: clamp(2.5rem, 6vw, 5rem);
 	}
 }
@@ -94,5 +93,7 @@
 	/* TODO: hover active */
 }
 
-
-/* TODO: responsivness */
+.password-too-week{
+ font-size: 12px; 
+ max-width: 27rem;
+}

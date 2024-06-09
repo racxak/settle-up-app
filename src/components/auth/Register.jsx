@@ -11,13 +11,17 @@ export default function Register({ changeForm }) {
 
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-
+	const specialCharacters = "!@#%^&*.";
 	const [errorMsg, setErrorMsg] = useState("");
 	const [successMsg, setSuccessMsg] = useState("");
+	const hasNumber = /\d/; 
+	const hasSpecialChar = new RegExp(`[${specialCharacters.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')}]`); 
+
 
 	const handleSignUp = async (e) => {
     e.preventDefault();
 
+		if (password.length > 5 && hasNumber.test(password) && hasSpecialChar.test(password)) {
 		const user = {
       firstname: firstName,
       lastname: lastName,
@@ -48,6 +52,7 @@ export default function Register({ changeForm }) {
       setErrorMsg('An unexpected error occurred');
       setSuccessMsg("");
     }
+	}
   };
 
 	
@@ -92,9 +97,9 @@ export default function Register({ changeForm }) {
 				></input>
 				<span className="password-toggle-icon">{Icon}</span>
 			</div>
-
-			{successMsg && <p style={{ color: 'green' }}>{successMsg}</p>}
-      {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
+			{(password.length > 0 && (password.length <= 5 || !hasNumber.test(password) || !hasSpecialChar.test(password))) && <p className="error-msg password-too-week">Password is too weak - should contain a special character, a number and at least 6 characters</p>}
+			{successMsg && <p className="success-msg">{successMsg}</p>}
+      {errorMsg && <p className="error-msg">{errorMsg}</p>}
 
 			<div className="form-buttons-layout">
 				<span>

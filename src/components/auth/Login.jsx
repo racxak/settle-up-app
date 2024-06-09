@@ -62,12 +62,12 @@ export default function Login({ changeForm }) {
 				<input type={InputType} required placeholder="**********" onChange={(e)=>  setAuthData({ ...authData, password: e.target.value })} />
 				<span className="password-toggle-icon">{Icon}</span>
 			</div>
-			{successMsg && <p style={{ color: 'green' }}>{successMsg}</p>}
-      {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
+			{successMsg && <p className="success-msg">{successMsg}</p>}
+      {errorMsg && <p className="error-msg">{errorMsg}</p>}
 			<div className="form-buttons-layout">
 				<span>
-					You dont have an account yet? 
-					<button type="button" onClick={() => changeForm("register")}> Sign up</button>
+					You dont have an account yet?	{" "} 
+					<button type="button" onClick={() => changeForm("register")}>Sign up</button>
 				</span>
 				<button type="submit">
 					<img src={ArrowIcon} alt="arrow-icon" />
