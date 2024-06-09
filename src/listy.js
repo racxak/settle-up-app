@@ -220,4 +220,4 @@ export const LISTS = [
   
 ];
 
-export const API = "http://localhost:8080/api/v1"
+export const API = "https://app.lenkiewiczmarcin.dev/api/v1"
