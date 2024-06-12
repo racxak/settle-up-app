@@ -17,6 +17,7 @@ export default function Invitations({ listId }) {
 	const handleAddNewListMember = async (e) => {
     
 		e.preventDefault();
+
 		const newMember = {
 			listId: listId,
 			receiverEmail: email.trim(),
@@ -58,10 +59,13 @@ export default function Invitations({ listId }) {
       if (response.ok) {
         const data = await response.json();
         setInvitationToken(data);
+				fetchInvitations("PENDING");
+			
       }
     } catch (error) {
       console.log(error);
     }
+		setEmail("");
   };
 
   const fetchInvitations = async (invitationStatus) => {
@@ -109,6 +113,7 @@ export default function Invitations({ listId }) {
 						onChange={(e) => setEmail(e.target.value)}
 						value={email}
 						placeholder="new-member@gmail.com"
+						style={{minWidth: '15rem', width: '18vw'}}
 					/>
 					<span className="add-new-list-member">
 						<GoPlus

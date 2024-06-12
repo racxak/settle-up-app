@@ -1,8 +1,8 @@
 import "./ListPanel.css"
 import { useNavigate } from "react-router-dom";
 
-export default function ListPanel({name, listId, userBalance}){
-	const navigate = useNavigate();
+ export default function ListPanel({name, listId, userBalance}){
+ 	const navigate = useNavigate();
 
 
   return(
@@ -13,7 +13,6 @@ export default function ListPanel({name, listId, userBalance}){
   <p id="id">#{listId}</p> 
   </span>
   <span id="horizontal-layout"> <div id="line"></div><p id="owe"> Balance {userBalance}zł </p></span>
-
 
 
 {/*  Wyświetlanie pod konkretne rozliczenia

@@ -6,6 +6,7 @@ import { API  } from "../../listy";
 import { AuthContext } from "../../contexts/authContext";
 import { jwtDecode } from "jwt-decode";
 
+
 export default function Login({ changeForm }) {
 	const [InputType, Icon] = usePasswordToogle();
 	const navigate = useNavigate();
@@ -59,7 +60,7 @@ export default function Login({ changeForm }) {
 			<label> Password </label>
 
 			<div className="input-with-button">
-				<input type={InputType} required placeholder="**********" onChange={(e)=>  setAuthData({ ...authData, password: e.target.value })} />
+				<input  style={{ marginBottom: errorMsg || successMsg ? '0' : '3vh' }} type={InputType} required placeholder="**********" onChange={(e)=>  setAuthData({ ...authData, password: e.target.value })} />
 				<span className="password-toggle-icon">{Icon}</span>
 			</div>
 			{successMsg && <p className="success-msg">{successMsg}</p>}

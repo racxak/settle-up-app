@@ -1,7 +1,6 @@
 import { useLocation, useParams } from "react-router-dom";
-import IconEvents from "../assets/icon-events.png";
+import IconTransactions from "../assets/icon-transactions.png";
 import IconUsers from "../assets/icon-users.png";
-import AddIcon from "./../assets/icon-button-add.png";
 import Modal from "./modal/Modal";
 import "./SingleList.css";
 import { useContext, useEffect, useState, useRef } from "react";
@@ -10,22 +9,33 @@ import Navbar from "./navbar/Navbar";
 import { API } from "../listy";
 import { AuthContext } from "../contexts/authContext";
 import Invitations from "./Invitations";
+import { TiUserAddOutline } from "react-icons/ti";
+import { GoArrowRight } from "react-icons/go";
 
 export default function SingleList() {
 	const { listId } = useParams();
 	const dialog = useRef();
 
-	const { token } = useContext(AuthContext);
-	const location = useLocation();
-	const [usersOrEventsActive, setUsersOrEventsActive] = useState("");
+	const [transferData, setTransferData] = useState({
+		fromUserId : 0,
+    toUserId: 0,
+    amount: 0
+	});
+	const { token, userId } = useContext(AuthContext);
+	const [usersOrTransactionsActive, setUsersOrTransactionsActive] =
+		useState("");
 	const [debtsShown, setDebstShown] = useState(true);
 	const [listData, setListData] = useState([]);
 	const [items, setItems] = useState([]);
 	const [members, setMembers] = useState([]);
+	const [userBalance, setUserBalance] = useState(0);
+	const [allPayments, setAllPayments] = useState([]);
+
 	useEffect(() => {
 		if (token) {
 			fetchShoppingList();
 			fetchShoppingListItems();
+			fetchUserBalance();
 		}
 	}, [token]);
 
@@ -34,9 +44,10 @@ export default function SingleList() {
 	}
 
 	function sideBarChange(change) {
-		setUsersOrEventsActive((prev) => {
-			if (change === "events" && change !== prev) {
-				return "events";
+		setUsersOrTransactionsActive((prev) => {
+			if (change === "transactions" && change !== prev) {
+				fetchAllTransactions();
+				return "transactions";
 			} else if (change === "users" && change !== prev) {
 				fetchShoppingListMembers();
 				return "users";
@@ -122,6 +133,90 @@ export default function SingleList() {
 	function handleDialogOpen() {
 		dialog.current.open();
 	}
+
+	const fetchUserBalance = async () => {
+		const url = `${API}/shopping-lists/${listId}/balances/${userId}`;
+		try {
+			const response = await fetch(url, {
+				method: "GET",
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+
+			if (response.ok) {
+				const data = await response.json();
+				setUserBalance(data.balance);
+			} else {
+				console.error("Failed to fetch user balance");
+			}
+		} catch (error) {
+			console.error("An unexpected error occurred while fetching user balance");
+		}
+	};
+
+	const fetchAllTransactions = async () => {
+		const url = `${API}/shopping-lists/${listId}/payments`;
+		try {
+			const response = await fetch(url, {
+				method: "GET",
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+
+			if (response.ok) {
+				const data = await response.json();
+				setAllPayments(data);
+			} else {
+				console.error("Failed to fetch payments");
+			}
+		} catch (error) {
+			console.error("An unexpected error occurred while fetching payments");
+		}
+	};
+
+	const handleSettleUp = async () => {
+		const url = `${API}/shopping-lists/${listId}/payments/resolve`;
+
+		try {
+			const response = await fetch(url, {
+				method: "PUT",
+				headers: {
+					Authorization: `Bearer ${token}`,
+					"Content-Type": "application/json",
+				},
+			});
+
+			if (response.ok) {
+				console.log("SETTLE UP");
+				fetchAllTransactions();
+			} else {
+				console.error("Failed to settle up");
+			}
+		} catch (error) {
+			console.error("An unexpected error occurred while settle up");
+		}
+	};
+
+	const handlePaymentBetweenTwoUsers = async () => {
+		const url = `${API}/shopping-lists/${listId}/items/`;
+
+		try {
+			const response = await fetch(url, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+
+			if (response.ok) {
+			}
+		} catch (error) {
+			console.log("An unexpected error occurred");
+		}
+	};
+
 	return (
 		<div id="scrollbar" className="single-list-page">
 			<Navbar>
@@ -134,6 +229,16 @@ export default function SingleList() {
 					<h2 id="list-id">#{listId}</h2>
 				</span>
 			</Navbar>
+
+			{debtsShown && (
+				<div id="debts">
+					<span id="horizontal-layout">
+						{" "}
+						<div id="line"></div>
+						<p id="owe"> You owe overall {userBalance}zł </p>
+					</span>
+				</div>
+			)}
 
 			{/* {debtsShown &&
       <div id="debts">
@@ -152,15 +257,16 @@ export default function SingleList() {
 					initialItems={items}
 					getItems={fetchShoppingListItems}
 					listId={listId}
+					settleUp={handleSettleUp}
 				></ShoppingList>
 
 				<div id="user-or-event-wrapper">
 					<div id="horizontal-layout" className="user-or-event-btn">
 						<img
-							onClick={() => sideBarChange("events")}
-							id="icon-events"
-							src={IconEvents}
-							alt="icon-events"
+							onClick={() => sideBarChange("transactions")}
+							id="icon-trasactions"
+							src={IconTransactions}
+							alt="icon-trasactions"
 						/>
 						<img
 							onClick={() => sideBarChange("users")}
@@ -171,16 +277,14 @@ export default function SingleList() {
 					</div>
 
 					{/* Lista członków grupy */}
-					{usersOrEventsActive === "users" && (
-						<div className="users-or-events-container users-list">
-							<img
+					{usersOrTransactionsActive === "users" && (
+						<div className="users-or-transactions-container users-list">
+							<TiUserAddOutline
 								onClick={handleDialogOpen}
-								src={AddIcon}
-								alt="add-button"
-								className="add-btn-small add-new-member-btn"
+								className="add-new-member-btn"
 							/>
 							<Modal ref={dialog} onClose={handleDialogClose}>
-								<Invitations listId={listId}/>
+								<Invitations listId={listId} />
 							</Modal>
 							{members.map((member) => (
 								<div key={member.id}>
@@ -192,9 +296,31 @@ export default function SingleList() {
 						</div>
 					)}
 
-					{/* Lista zdarzeń wykonanych w obrębie listy */}
-					{usersOrEventsActive === "events" && (
-						<div className="users-or-events-container events-lists"></div>
+					{/* Lista transakcji listy */}
+					{usersOrTransactionsActive === "transactions" && (
+						<div className="users-or-transactions-container transactions-lists">
+							<p style={{ fontWeight: "bold" }}>Make a transfer</p>
+							<span style={{ display: "flex", flexDirection: "row" }}>
+								<input
+									style={{ width: "1rem" }}
+									type="text"
+									placeholder="$$$"
+								/>
+								<p>to</p> <input style={{ width: "3rem" }} type="email" />
+								<button>send</button>{" "}
+							</span>
+							<p style={{ fontWeight: "bold" }}>All transactions</p>
+
+							{allPayments.length === 0 && <p>Nothing here yet</p>}
+							{allPayments &&
+								allPayments.map((payment) => (
+									<span>
+										{payment.fromUser.name}
+										<GoArrowRight />
+										{payment.toUser.name} {payment.amount}zł
+									</span>
+								))}
+						</div>
 					)}
 				</div>
 			</div>

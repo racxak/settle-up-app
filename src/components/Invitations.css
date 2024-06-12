@@ -1,7 +1,6 @@
 .invitations-btns-wrapper{
   display: flex;
   margin-top: 1rem;
-  width: 30vw;
 }
 
 .invitations-btns-wrapper button{

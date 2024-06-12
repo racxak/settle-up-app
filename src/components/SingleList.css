@@ -32,7 +32,7 @@
   align-items: center;
 }
 
-#icon-events{
+#icon-trasactions{
   align-self: center;
   width:30px;
   height: 30px;
@@ -42,15 +42,17 @@
   align-self: center;
   margin-right: 10px ;
 }
-.users-or-events-container{
+.users-or-transactions-container{
   width: 15vw;
-  margin: 1rem;
+  margin: 3rem 1rem 1rem 1rem;
   padding: 1vw 3vw;
   border-radius: 8px;
   height: 50vh;
 }
 .user-or-event-btn{
   justify-content: flex-end;
+  position: absolute;
+  right: 0;
 }
 
 .users-list{
@@ -63,7 +65,7 @@
   );
 }
 
-.events-lists {
+.transactions-lists {
   background: linear-gradient(
     to bottom,
     rgba(205, 58, 255, 0.05) 0%, 
@@ -80,7 +82,8 @@
 }
 
 .add-new-member-btn{
-  margin-top: 1.5rem; 
+  margin-top: 1.5rem;
+  font-size: 20px; 
 }
 .member-name {
   font-weight: bold;

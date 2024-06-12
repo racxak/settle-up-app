@@ -74,15 +74,16 @@ h3{
   color: var(--primary-color);
 }
 
-.list-item:hover .delete-item, 
-.list-item:hover .change-item {
-  display: flex; 
+.list-item:hover .edit-item, 
+.list-item:hover .delete-item {
+  display: flex;
 
 }
-    .delete-item, .change-item {
+    .delete-item, .edit-item {
       display: none; 
       color: var(--background-color-rgba);
       background-color: transparent;
       font-size: 20px;
       border: none;
+      padding-right: 0;
     }

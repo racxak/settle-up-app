@@ -156,6 +156,7 @@ export default function AllListsPage() {
 
 	const deleteItem = (indexToDelete) => { setMembers(prevMembers => prevMembers.filter((_, index) => index !== indexToDelete));
     }
+		
 	return (
 		<>
 			<div id="scrollbar" className="lists-page">

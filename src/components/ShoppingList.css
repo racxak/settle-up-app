@@ -48,9 +48,11 @@
   flex-direction: row; 
   justify-content: space-between;
   width:-webkit-fill-available;
-  height: 1vh;
 }
 
+.add-new-item-container > :first-child input {
+ margin-bottom: 0;
+}
 .add-new-item-container > :first-child > :first-child {
   background-color: transparent;
   border: none;
@@ -154,5 +156,10 @@
   flex-direction: row;
   align-items: center;
   height: 4vh;
+  }
+
+  .edit-delete{
+    display: flex;
+    flex-direction: row;
   }
   
