@@ -118,7 +118,6 @@ function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 		// setItems(prevItems => prevItems.filter(item => !item.purchased));
 	};
 
-
 	const handleEditItem = (item) => {
 		setEditedItem(item);
 	};
@@ -253,7 +252,7 @@ function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 										<>
 											<span className="item-amount">
 												<p>{item.name}</p>
-												<p>{item.quantity}</p>
+												<p style={{marginLeft: "1rem"}}>{item.quantity}</p>
 											</span>
 											<span className="edit-delete">
 												<button

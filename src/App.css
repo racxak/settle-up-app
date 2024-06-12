@@ -87,3 +87,7 @@ h3{
       border: none;
       padding-right: 0;
     }
+
+    .delete-item :hover , .edit-item :hover {    
+      color: var(--accent-color);
+    }

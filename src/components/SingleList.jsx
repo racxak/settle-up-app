@@ -11,16 +11,14 @@ import { AuthContext } from "../contexts/authContext";
 import Invitations from "./Invitations";
 import { TiUserAddOutline } from "react-icons/ti";
 import { GoArrowRight } from "react-icons/go";
+import EmailDropdown from "./EmailDropdown";
+import ArrowIcon from "../assets/arrow-icon.png";
 
 export default function SingleList() {
 	const { listId } = useParams();
 	const dialog = useRef();
 
-	const [transferData, setTransferData] = useState({
-		fromUserId : 0,
-    toUserId: 0,
-    amount: 0
-	});
+	const [transferAmount, setTransferAmount] = useState(null);
 	const { token, userId } = useContext(AuthContext);
 	const [usersOrTransactionsActive, setUsersOrTransactionsActive] =
 		useState("");
@@ -39,6 +37,12 @@ export default function SingleList() {
 		}
 	}, [token]);
 
+	const [selectedUserId, setSelectedUserId] = useState(null);
+
+	const handleUserSelect = (userId) => {
+		setSelectedUserId(userId);
+	};
+
 	function handleDeptsShown() {
 		setDebstShown((prev) => !prev);
 	}
@@ -46,6 +50,7 @@ export default function SingleList() {
 	function sideBarChange(change) {
 		setUsersOrTransactionsActive((prev) => {
 			if (change === "transactions" && change !== prev) {
+				fetchShoppingListMembers();
 				fetchAllTransactions();
 				return "transactions";
 			} else if (change === "users" && change !== prev) {
@@ -81,7 +86,7 @@ export default function SingleList() {
 	};
 
 	const fetchShoppingListItems = async () => {
-		const url = `${API}/shopping-lists/${listId}/items`;
+		const url = `${API}/shopping-lists/${listId}/items?sort=id,desc`;
 		try {
 			const response = await fetch(url, {
 				method: "GET",
@@ -200,21 +205,31 @@ export default function SingleList() {
 	};
 
 	const handlePaymentBetweenTwoUsers = async () => {
-		const url = `${API}/shopping-lists/${listId}/items/`;
-
+		const url = `${API}/shopping-lists/${listId}/payments`;
+    if(transferAmount!==0 && selectedUserId!==null){
+		const transferData = {
+			fromUserId: Number(userId),
+			toUserId: selectedUserId,
+			amount: Number(transferAmount),
+		};
+		console.log(transferData);
 		try {
 			const response = await fetch(url, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
+				body: JSON.stringify(transferData),
 			});
 
 			if (response.ok) {
+				setTransferAmount(null);
+				fetchAllTransactions();	
 			}
 		} catch (error) {
 			console.log("An unexpected error occurred");
-		}
+		}}
+    // to do komunikat błedu
 	};
 
 	return (
@@ -233,24 +248,11 @@ export default function SingleList() {
 			{debtsShown && (
 				<div id="debts">
 					<span id="horizontal-layout">
-						{" "}
 						<div id="line"></div>
 						<p id="owe"> You owe overall {userBalance}zł </p>
 					</span>
 				</div>
 			)}
-
-			{/* {debtsShown &&
-      <div id="debts">
-      {iOwn.map(item => (
-      <span id="horizontal-layout"> <div id="line"></div><p id="owe" key={item.name}> You owe {item.amount}zł to {item.name}  </p></span>
-      ))}
-      
-      {owned.map(item => (
-       <span id="horizontal-layout">  <div id="line"></div><p id="owes" key={item.name}> {item.name} owes you {item.amount}zł</p> </span>
-      ))}
-      </div>
-} */}
 
 			<div id="shopping-list-wrapper">
 				<ShoppingList
@@ -300,25 +302,33 @@ export default function SingleList() {
 					{usersOrTransactionsActive === "transactions" && (
 						<div className="users-or-transactions-container transactions-lists">
 							<p style={{ fontWeight: "bold" }}>Make a transfer</p>
-							<span style={{ display: "flex", flexDirection: "row" }}>
-								<input
-									style={{ width: "1rem" }}
-									type="text"
-									placeholder="$$$"
+							<span className="transfer">
+								<input type="number" placeholder="$$$" value={transferAmount} onChange={(e)=>setTransferAmount(e.target.value)}/>
+								<p>zł to</p>
+								<EmailDropdown
+									users={members}
+									onUserSelect={handleUserSelect}
 								/>
-								<p>to</p> <input style={{ width: "3rem" }} type="email" />
-								<button>send</button>{" "}
+								<GoArrowRight className="send-transfer" onClick={handlePaymentBetweenTwoUsers}/>
 							</span>
-							<p style={{ fontWeight: "bold" }}>All transactions</p>
+							<p style={{ fontWeight: "bold" }}>All debts</p>
 
 							{allPayments.length === 0 && <p>Nothing here yet</p>}
 							{allPayments &&
 								allPayments.map((payment) => (
-									<span>
-										{payment.fromUser.name}
-										<GoArrowRight />
-										{payment.toUser.name} {payment.amount}zł
-									</span>
+									<p>
+										<span>
+											{payment.fromUser.name} owes {payment.toUser.name}{" "}
+										</span>
+										<span
+											style={{
+												color: "var(--accent-color)",
+												fontWeight: "bold",
+											}}
+										>
+											{payment.amount}zł{" "}
+										</span>
+									</p>
 								))}
 						</div>
 					)}

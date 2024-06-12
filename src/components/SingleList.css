@@ -48,6 +48,7 @@
   padding: 1vw 3vw;
   border-radius: 8px;
   height: 50vh;
+  min-width: 15rem;
 }
 .user-or-event-btn{
   justify-content: flex-end;
@@ -93,4 +94,48 @@
   margin-top: 0.3rem;
   margin-bottom: 0.3rem;
   font-size: 14px;
+}
+.transfer{
+   display: flex;
+   flex-direction: row;
+   height: 1.5rem;
+   align-items: center;
+
+   
+}
+
+.transfer input {
+  background-color: transparent;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  width: 1.9rem;
+}
+
+.transfer p {
+ width: 2.4rem;
+}
+#email-select{
+  margin: 0.5em;
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  width:8rem;
+}
+
+#email-select option {
+  appearance: none;
+  background-color: var(--background-color);
+  color: white;
+}
+
+.send-transfer{
+  font-size: 30px;
+}
+
+.send-transfer:hover{
+  cursor: pointer;
+  color: var(--accent-color)
 }
