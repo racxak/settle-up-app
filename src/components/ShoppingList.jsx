@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import AddIcon from "./../assets/icon-button-add.png";
 import Button from "./Button";
 import "./ShoppingList.css";
@@ -13,9 +13,18 @@ function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 	const [bills, setBills] = useState([]);
 	const { userId, token } = useContext(AuthContext);
 	const [billsActive, setBillsActive] = useState(false);
-	const [costs, setCosts] = useState(0);
+	const [costs, setCosts] = useState(null);
 	const [noCosts, setNoCosts] = useState(false);
 	const [editedItem, setEditedItem] = useState(null);
+	const [items, setItems] = useState([]);
+
+	useEffect(() => {
+		const updatedItems = initialItems.map(item => ({
+			...item,
+			earlyPurchased: item.purchased
+		}));
+		setItems(updatedItems);
+	}, [initialItems]);
 
 	const handleToggleView = () => {
 		if (!billsActive && bills.length === 0) {
@@ -54,41 +63,21 @@ function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 		}
 	};
 
-	const toggleItemCompletion = async (itemId) => {
-		const itemToUpdate = initialItems.find((item) => item.id === itemId);
-		const url = `${API}/shopping-lists/${listId}/items/${itemId}`;
-		const updatedItem = {
-			name: itemToUpdate.name,
-			quantity: itemToUpdate.quantity,
-			purchased: !itemToUpdate.purchased,
-		};
-
-		try {
-			const response = await fetch(url, {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(updatedItem),
-			});
-
-			if (response.ok) {
-				getItems();
-			}
-		} catch (error) {
-			console.log("An unexpected error occurred");
-		}
+	const toggleItemCompletion = (itemId) => {
+		setItems(prevItems =>
+			prevItems.map(item =>
+				item.id === itemId ? { ...item, earlyPurchased: !item.earlyPurchased } : item
+			)
+		);
 	};
 
 	const handleAddBill = async () => {
-		if (costs === 0) {
+		if (costs === null) {
 			setNoCosts(true);
-		}else
-		// if (costs != 0 && items.some((item) => item.purchased)) {
-		if (costs != 0) {
+		}else {
 			setNoCosts(false);
-			const completedItemsIDs = initialItems
-				.filter((item) => item.purchased)
+			const completedItemsIDs = items
+				.filter((item) => item.earlyPurchased)
 				.map((item) => item.id);
 			const newBill = {
 				total: costs,
@@ -109,24 +98,33 @@ function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 				if (response.ok) {
 					getAllBills();
 					setCosts(0);
+					const updatedItems = items.map(item =>
+						item.earlyPurchased ? { ...item, purchased: true, earlyPurchased: false } : item
+					);
+					setItems(updatedItems);
+	
+					for (const item of updatedItems) {
+						if (item.purchased) {
+							await handleUpdateItem(item.id, item);
+						}
+					}
 				}
 			} catch (error) {
 				console.log("An unexpected error occurred");
 			}
 		}
-		// setBills(prevBills => [...prevBills, newBill]);
-		// setItems(prevItems => prevItems.filter(item => !item.purchased));
+
 	};
 
 	const handleEditItem = (item) => {
 		setEditedItem(item);
 	};
 
-	const handleUpdateItem = async (itemId) => {
-		const updatedItem = {
-			name: editedItem.name,
-			quantity: editedItem.quantity,
-
+	const handleUpdateItem = async (itemId, updatedItem) => {
+		const uItem = {
+			name: updatedItem.name,
+			quantity: updatedItem.quantity,
+			purchased : updatedItem.purchased
 		};
 		const url = `${API}/shopping-lists/${listId}/items/${itemId}`;
 		try {
@@ -135,7 +133,7 @@ function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify(updatedItem),
+				body: JSON.stringify(uItem),
 			});
 			if (response.ok) {
 				getItems();
@@ -159,9 +157,6 @@ function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 			if (response.ok) {
 				const fetchedBills = await response.json();
 				setBills(fetchedBills.page);
-				console.log("Bills");
-				console.log(bills);
-
 			} else {
 				console.error("Failed to fetch shopping list items");
 			}
@@ -239,13 +234,14 @@ function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 					</div>
 
 					<ul id="shopping-list">
-						{initialItems &&
-							initialItems.map((item) => (
+						{initialItems &&initialItems
+								.filter(item => !item.purchased)
+								.map(item => (
 								<li className="list-item" key={item.id}>
 									<input
 										id="cb"
 										type="checkbox"
-										checked={item.purchased}
+										checked={item.earlyPurchased}
 										onChange={() => toggleItemCompletion(item.id)}
 									/>
 										{/* { (editedItem === null || (editedItem !== null &&  editedItem.id !== item.id)) && ( */}
