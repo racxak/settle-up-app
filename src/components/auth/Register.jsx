@@ -22,6 +22,9 @@ export default function Register({ changeForm }) {
     e.preventDefault();
 
 		if (password.length > 5 && hasNumber.test(password) && hasSpecialChar.test(password)) {
+			setFirstName(prev => prev.charAt(0).toUpperCase() + prev.slice(1).toLowerCase());
+      setLastName ((prev) => prev.charAt(0).toUpperCase() + prev.slice(1).toLowerCase());
+
 		const user = {
       firstname: firstName,
       lastname: lastName,

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import AddIcon from "./../assets/icon-button-add.png";
 import Button from "./Button";
 import "./ShoppingList.css";
@@ -6,6 +6,7 @@ import { API } from "../listy";
 import { AuthContext } from "../contexts/authContext";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { FiEdit3 } from "react-icons/fi";
+import Modal from "./modal/Modal";
 
 function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 	const [newItem, setNewItem] = useState("");
@@ -17,11 +18,13 @@ function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 	const [noCosts, setNoCosts] = useState(false);
 	const [editedItem, setEditedItem] = useState(null);
 	const [items, setItems] = useState([]);
+	const [singleBill, setSingleBill] = useState({});
+	const dialog = useRef();
 
 	useEffect(() => {
-		const updatedItems = initialItems.map(item => ({
+		const updatedItems = initialItems.map((item) => ({
 			...item,
-			earlyPurchased: item.purchased
+			earlyPurchased: item.purchased,
 		}));
 		setItems(updatedItems);
 	}, [initialItems]);
@@ -64,9 +67,11 @@ function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 	};
 
 	const toggleItemCompletion = (itemId) => {
-		setItems(prevItems =>
-			prevItems.map(item =>
-				item.id === itemId ? { ...item, earlyPurchased: !item.earlyPurchased } : item
+		setItems((prevItems) =>
+			prevItems.map((item) =>
+				item.id === itemId
+					? { ...item, earlyPurchased: !item.earlyPurchased }
+					: item
 			)
 		);
 	};
@@ -74,7 +79,7 @@ function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 	const handleAddBill = async () => {
 		if (costs === null) {
 			setNoCosts(true);
-		}else {
+		} else if (costs > 0) {
 			setNoCosts(false);
 			const completedItemsIDs = items
 				.filter((item) => item.earlyPurchased)
@@ -98,11 +103,13 @@ function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 				if (response.ok) {
 					getAllBills();
 					setCosts(0);
-					const updatedItems = items.map(item =>
-						item.earlyPurchased ? { ...item, purchased: true, earlyPurchased: false } : item
+					const updatedItems = items.map((item) =>
+						item.earlyPurchased
+							? { ...item, purchased: true, earlyPurchased: false }
+							: item
 					);
 					setItems(updatedItems);
-	
+
 					for (const item of updatedItems) {
 						if (item.purchased) {
 							await handleUpdateItem(item.id, item);
@@ -113,7 +120,6 @@ function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 				console.log("An unexpected error occurred");
 			}
 		}
-
 	};
 
 	const handleEditItem = (item) => {
@@ -124,7 +130,7 @@ function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 		const uItem = {
 			name: updatedItem.name,
 			quantity: updatedItem.quantity,
-			purchased : updatedItem.purchased
+			purchased: updatedItem.purchased,
 		};
 		const url = `${API}/shopping-lists/${listId}/items/${itemId}`;
 		try {
@@ -186,10 +192,34 @@ function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 	};
 
 	const handleClickSettleUp = () => {
-		settleUp();	
+		settleUp();
 		getAllBills();
+	};
+
+	function handleDialogClose() {
+		dialog.current.close();
 	}
-	
+	const hadleFetchSingleBill = async (billId) => {
+		const url = `${API}/shopping-lists/${listId}/bills/${billId}`;
+		try {
+			const response = await fetch(url, {
+				method: "GET",
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+
+			if (response.ok) {
+				const data = await response.json();
+				setSingleBill(data);
+				dialog.current.open();
+			} else {
+				console.error("Failed to fetch shopping lists");
+			}
+		} catch (error) {
+			console.error("An unexpected error occurred while fetching bill");
+		}
+	};
 	return (
 		<div id="shopping-list-container">
 			<span>
@@ -234,28 +264,27 @@ function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 					</div>
 
 					<ul id="shopping-list">
-						{initialItems &&initialItems
-								.filter(item => !item.purchased)
-								.map(item => (
-								<li className="list-item" key={item.id}>
-									<input
-										id="cb"
-										type="checkbox"
-										checked={item.earlyPurchased}
-										onChange={() => toggleItemCompletion(item.id)}
-									/>
+						{initialItems &&
+							initialItems
+								.filter((item) => !item.purchased)
+								.map((item) => (
+									<li className="list-item" key={item.id}>
+										<input
+											id="cb"
+											type="checkbox"
+											checked={item.earlyPurchased}
+											onChange={() => toggleItemCompletion(item.id)}
+										/>
 										{/* { (editedItem === null || (editedItem !== null &&  editedItem.id !== item.id)) && ( */}
 										<>
 											<span className="item-amount">
 												<p>{item.name}</p>
-												<p style={{marginLeft: "1rem"}}>{item.quantity}</p>
+												<p style={{ marginLeft: "1rem" }}>{item.quantity}</p>
 											</span>
 											<span className="edit-delete">
 												<button
 													className="edit-item"
-													onClick={() =>
-														handleEditItem(item)
-													}
+													onClick={() => handleEditItem(item)}
 												>
 													<FiEdit3 />
 												</button>
@@ -267,8 +296,8 @@ function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 												</button>
 											</span>
 										</>
-									{/* )} */}
-									{/* form podczas edytowania
+										{/* )} */}
+										{/* form podczas edytowania
 									{editedItem && editedItem.id === item.id && (
 										<div  className="add-new-item-container edit-item-container">
 											{/* todo wygląd edytora */}
@@ -288,28 +317,39 @@ function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 											<button type="submit" className="save-btn">
 												Save
 											</button>
-										</form> */} 
+										</form> */}
 										{/* </div>
 									)} */}
-								</li>
-							))}
+									</li>
+								))}
 					</ul>
 
 					<div id="horizontal-layout" className="add-bill-container">
 						<input
 							id="i-paid"
 							type="number"
+							min="1"
+							step="1"
 							placeholder="$$$"
 							required
 							value={costs}
 							onChange={(e) => setCosts(e.target.value)}
 						/>
-						{noCosts && <p>Please enter the value you paid.</p>}
 
 						<Button onClick={handleAddBill} className="add-bill-btn">
 							add bill
 						</Button>
 					</div>
+					{noCosts && (
+						<p className="error-msg list-error">
+							Please enter the value you paid.
+						</p>
+					)}
+					{costs < 0 && (
+						<p className="error-msg  list-error">
+							Please enter the correct value.
+						</p>
+					)}
 				</>
 			)}
 			{/*Wyświetlanie rachunków */}
@@ -317,19 +357,34 @@ function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 				<>
 					{bills &&
 						bills.map((bill) => (
-							<div key={bill.id}>
-								<div className="bill">
-									<p>
-										{bill.owner.name} paid <>{bill.total}</> zł for:{" "}
-									</p>
-									<div id={bill.id}>
-										{/* <ul>{bill.completedItems.map((item) => <li>{item.text}</li>)}</ul>   */}
-									</div>{" "}
-								</div>
-								<div className="divider" />
+							<div
+								className="bill"
+								key={bill.id}
+							>
+								<p onClick={() => hadleFetchSingleBill(bill.id)}>
+									{bill.owner.name} paid <>{bill.total}</> zł
+								</p>
+								<Modal ref={dialog} onClose={handleDialogClose}>
+									<h3 style={{marginBottom: "1rem"}}>
+										<span style={{ textTransform: "capitalize"}}>
+											{bill.owner.name}{" "}
+										</span>
+										paid {bill.total} zł for:
+									</h3>
+									{singleBill &&
+										singleBill.items &&
+										singleBill.items.map((item) => (
+											<li className="list-item" key={item.id}>
+												<span className="item-amount">
+													<p>{item.name}</p>
+													<p style={{ marginLeft: "1rem" }}>{item.quantity}</p>
+												</span>
+											</li>
+										))}
+								</Modal>
+								<div className="divider bill-divider" />
 							</div>
 						))}
-
 					<Button className="settle-up-button" onClick={handleClickSettleUp}>
 						SettleUp
 					</Button>

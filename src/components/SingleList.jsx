@@ -249,7 +249,7 @@ export default function SingleList() {
 				<div id="debts">
 					<span id="horizontal-layout">
 						<div id="line"></div>
-						<p id="owe"> You owe overall {userBalance}zł </p>
+						<p id="owe"> {userBalance}zł </p>
 					</span>
 				</div>
 			)}

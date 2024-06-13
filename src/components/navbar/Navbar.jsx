@@ -41,6 +41,8 @@ const updateInvitation = async (invitationId, status, token) => {
 export default function Navbar({ children }) {
 	const { logout, userId, token } = useContext(AuthContext);
 	const [invitations, setInvitations] = useState([]);
+	const [invitationsVisible, setInvitationsVisible] = useState(false);
+
 	const navigate = useNavigate();
 
 	const fetchInvitations = async (userId, token, setInvitations) => {
@@ -87,11 +89,11 @@ export default function Navbar({ children }) {
 			<div id="buttons-navabr-wrapper">
 				<ul>
 					<li className="dropdown">
-						<a href="javascript:void(0)" className="dropbtn">
+						<a href="javascript:void(0)" className="dropbtn"onClick={()=>setInvitationsVisible((prev)=>!prev)}> 
 							Invitations to lists
 						</a>
             {invitations.length !==0 && <div className="ivitations-counter">{invitations.length}</div>}
-						<div className="dropdown-content">
+						<div className={invitationsVisible? "dropdown-content-visible dropdown-content ": "dropdown-content" }>
             {invitations.length === 0 && <span>You don't have any invites </span>}
 							{invitations && invitations.map((invitation) => (
 								<span key={invitation.id}>

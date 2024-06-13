@@ -83,7 +83,7 @@ li.dropdown {
 
 .dropdown-content {
   display: none;
-  position: absolute;
+  position: absolute; 
   min-width: 160px;
   z-index: 1;
   background-color: var(--container-color);
@@ -134,3 +134,7 @@ li.dropdown {
   flex-direction: column;
 }
 
+.dropdown-content-visible{
+  display: flex;
+  flex-direction: column;
+}
