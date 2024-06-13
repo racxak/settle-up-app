@@ -7,12 +7,9 @@ const EmailDropdown = ({users, onUserSelect}) => {
   const handleChange = (event) => {
     setSelectedEmail(event.target.value);
 
-    const selectedUser = users.find(user => user.email === selectedEmail);
-    console.log(selectedUser.id)
-
-    if (selectedUser) {  
-      onUserSelect(selectedUser.id);
-    } 
+    if(selectedEmail){
+      onUserSelect(selectedEmail);
+    }
 };
 
   return (

@@ -28,6 +28,7 @@ export default function SingleList() {
 	const [members, setMembers] = useState([]);
 	const [userBalance, setUserBalance] = useState(0);
 	const [allPayments, setAllPayments] = useState([]);
+	const [selectedUser, setSelectedUser] = useState("");
 
 	useEffect(() => {
 		if (token) {
@@ -37,10 +38,9 @@ export default function SingleList() {
 		}
 	}, [token]);
 
-	const [selectedUserId, setSelectedUserId] = useState(null);
 
-	const handleUserSelect = (userId) => {
-		setSelectedUserId(userId);
+	const handleUserSelect = (user) => {
+		setSelectedUser(user);
 	};
 
 	function handleDeptsShown() {
@@ -206,10 +206,10 @@ export default function SingleList() {
 
 	const handlePaymentBetweenTwoUsers = async () => {
 		const url = `${API}/shopping-lists/${listId}/payments`;
-    if(transferAmount!==0 && selectedUserId!==null){
+    if(transferAmount!==0 && selectedUser!==""){
 		const transferData = {
 			fromUserId: Number(userId),
-			toUserId: selectedUserId,
+			toUserEmail: selectedUser,
 			amount: Number(transferAmount),
 		};
 		console.log(transferData);

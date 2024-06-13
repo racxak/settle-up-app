@@ -34,6 +34,7 @@ export default function Invitations({ listId }) {
 
 			if (response.ok) {
 				setSuccesMsg(`Invitation sent to  ${email} successfully`);
+				setEmail("");
 				setErrorMsg("");
 			} else if (response.status !== 201) {
 				setSuccesMsg("");
