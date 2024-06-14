@@ -89,6 +89,7 @@
 .member-name {
   font-weight: bold;
   margin-bottom: 0rem;
+  text-transform: capitalize;
 }
 .member-email{
   margin-top: 0.3rem;

@@ -79,6 +79,7 @@ ul {
 
 li.dropdown {
   display: inline-block;
+  cursor: pointer;
 }
 
 .dropdown-content {
@@ -132,9 +133,13 @@ li.dropdown {
 .dropdown:hover .dropdown-content {
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 }
 
 .dropdown-content-visible{
   display: flex;
   flex-direction: column;
+}
+.logout:hover{
+  cursor: pointer;
 }

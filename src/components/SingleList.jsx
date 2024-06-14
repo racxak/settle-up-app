@@ -22,7 +22,7 @@ export default function SingleList() {
 	const { token, userId } = useContext(AuthContext);
 	const [usersOrTransactionsActive, setUsersOrTransactionsActive] =
 		useState("");
-	const [debtsShown, setDebstShown] = useState(true);
+	const [debtsShown, setDebstShown] = useState(false);
 	const [listData, setListData] = useState([]);
 	const [items, setItems] = useState([]);
 	const [members, setMembers] = useState([]);

@@ -282,12 +282,12 @@ function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 												<p style={{ marginLeft: "1rem" }}>{item.quantity}</p>
 											</span>
 											<span className="edit-delete">
-												<button
+												{/* <button
 													className="edit-item"
 													onClick={() => handleEditItem(item)}
 												>
 													<FiEdit3 />
-												</button>
+												</button> */}
 												<button
 													className="delete-item"
 													onClick={() => deleteItem(item.id)}
@@ -361,7 +361,7 @@ function ShoppingList({ initialItems, getItems, listId, settleUp }) {
 								className="bill"
 								key={bill.id}
 							>
-								<p onClick={() => hadleFetchSingleBill(bill.id)}>
+								<p onClick={() => hadleFetchSingleBill(bill.id)}  style={{ opacity: bill.expired ? 0.2 : 1 }}>
 									{bill.owner.name} paid <>{bill.total}</> zł
 								</p>
 								<Modal ref={dialog} onClose={handleDialogClose}>

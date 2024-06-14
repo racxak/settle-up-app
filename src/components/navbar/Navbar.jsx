@@ -38,7 +38,7 @@ const updateInvitation = async (invitationId, status, token) => {
 	}
 };
 
-export default function Navbar({ children }) {
+export default function Navbar({ children, getShoppingLists}) {
 	const { logout, userId, token } = useContext(AuthContext);
 	const [invitations, setInvitations] = useState([]);
 	const [invitationsVisible, setInvitationsVisible] = useState(false);
@@ -75,6 +75,9 @@ export default function Navbar({ children }) {
 	}, [userId, token]);
 
 	const handleUpdate = async (status, invitationId) => {
+		if(status === "ACCEPTED"){
+			getShoppingLists();
+		}
 		updateInvitation(invitationId, status, token);
 		await fetchInvitations(userId, token, setInvitations);
 	};
@@ -89,7 +92,7 @@ export default function Navbar({ children }) {
 			<div id="buttons-navabr-wrapper">
 				<ul>
 					<li className="dropdown">
-						<a href="javascript:void(0)" className="dropbtn"onClick={()=>setInvitationsVisible((prev)=>!prev)}> 
+						<a className="dropbtn"onClick={()=>setInvitationsVisible((prev)=>!prev)}> 
 							Invitations to lists
 						</a>
             {invitations.length !==0 && <div className="ivitations-counter">{invitations.length}</div>}
@@ -98,7 +101,7 @@ export default function Navbar({ children }) {
 							{invitations && invitations.map((invitation) => (
 								<span key={invitation.id}>
 									<p>
-										{invitation.list.name} {invitation.list.owner.name}
+										{invitation.list.name} by {invitation.list.owner.name}
 									</p>
 									<FaCheck
 										onClick={() => handleUpdate("ACCEPTED", invitation.id)}
@@ -110,7 +113,7 @@ export default function Navbar({ children }) {
 							))}
 						</div>
 					</li>
-					<li onClick={() => logout()}>
+					<li className="logout" onClick={() => logout()}>
 						Logout <AiOutlineLogout />
 					</li>
 				</ul>

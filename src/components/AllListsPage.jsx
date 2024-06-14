@@ -160,7 +160,7 @@ export default function AllListsPage() {
 	return (
 		<>
 			<div id="scrollbar" className="lists-page">
-				<Navbar>
+				<Navbar getShoppingLists={fetchShoppingLists}>
 					<h2 className="lists">LISTS</h2>
 				</Navbar>
 

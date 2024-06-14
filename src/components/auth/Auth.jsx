@@ -6,15 +6,17 @@ import Form from "./Form";
 export default function Auth() {
 	const dialog = useRef();
 
+	useEffect(()=>( 
+		 alert( 
+		 "Gotowe konto: ssmith@example.com  password123"
+		 )
+	),[])
+
 	function handleDialogOpen() {
 		dialog.current.open();
 	}
 
 	function handleDialogClose() {}
-
-	useEffect(()=>(
-		alert('Email: r@op.pl, password: !123ZiwG')
-	),[])
 
 	return (
 		<>
